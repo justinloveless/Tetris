@@ -103,6 +103,8 @@ public class Square {
                         break;
 		case RIGHT:
                         // INSERT YOUR CODE HERE
+						if(col == (Grid.WIDTH - 1) || grid.isSet(row, col + 1))
+							move = false;
                         break;
 		}
 		return move;
