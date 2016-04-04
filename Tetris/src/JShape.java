@@ -9,8 +9,8 @@ import java.awt.Point;
  * 
  * This piece is made up of 4 squares in the following configuration:
  * 
- * Sq <br>
- * Sq <br>
+ *    Sq <br>
+ *    Sq <br>
  * Sq Sq <br>
  * 
  * The game piece "floats above" the Grid. The (row, col) coordinates are the
@@ -135,43 +135,67 @@ public class JShape extends Shape{
 	*/
 	public void rotate()
 	{
-		
+		/*    Sq
+		 *   (Sq)
+		 * Sq Sq
+		 */
 		if( square[1].getRow() - 1 == square[0].getRow()
-				&& square[1].getCol() == square[0].getCol()){
-				
+			&& square[1].getCol() == square[0].getCol()){
+			
+			//if J-Shape is too close to edge, don't rotate
+			if (square[1].getCol() > (grid.WIDTH - 2)){
+			}
+			else {				
 				square[0].setRow(1);
 				square[0].setCol(1);
 				square[2].setRow(-1);
 				square[2].setCol(-1);
 				square[3].setRow(-2);
 			}
-			else if( (square[1].getRow() == square[0].getRow() )
-					&& (square[1].getCol() + 1 == square[0].getCol())){
+		}
+		/*
+		 * Sq
+		 * Sq (Sq) Sq
+		 */
+		else if( (square[1].getRow() == square[0].getRow() )
+				&& (square[1].getCol() + 1 == square[0].getCol())){
+			
+			square[0].setRow(1);
+			square[0].setCol(-1);
+			square[2].setRow(-1);
+			square[2].setCol(1);
+			square[3].setCol(2);
+		}
+		/*  Sq Sq
+		 * (sq)
+		 *  Sq
+		 */
+		else if( (square[1].getRow() + 1  == square[0].getRow() )
+				&& (square[1].getCol() == square[0].getCol())){
+			
+			if (square[1].getCol() < 1){
 				
-				square[0].setRow(1);
-				square[0].setCol(-1);
-				square[2].setRow(-1);
-				square[2].setCol(1);
-				square[3].setCol(2);
-			}
-			else if( (square[1].getRow() + 1  == square[0].getRow() )
-					&& (square[1].getCol() == square[0].getCol())){
-				
+			}else {
 				square[0].setRow(-1);
 				square[0].setCol(-1);
 				square[2].setRow(1);
 				square[2].setCol(1);
 				square[3].setRow(2);
 			}
-			else if( (square[1].getRow() == square[0].getRow() )
-					&& (square[1].getCol() - 1 == square[0].getCol())){
-				
-				square[0].setRow(-1);
-				square[0].setCol(1);
-				square[2].setRow(1);
-				square[2].setCol(-1);
-				square[3].setCol(-2);
-			}		
+		}
+		/*
+		 *         Sq
+		 * Sq (Sq) Sq
+		 */
+		else if( (square[1].getRow() == square[0].getRow() )
+				&& (square[1].getCol() - 1 == square[0].getCol())){
+			
+			square[0].setRow(-1);
+			square[0].setCol(1);
+			square[2].setRow(1);
+			square[2].setCol(-1);
+			square[3].setCol(-2);
+		}		
 		
 		
 	}

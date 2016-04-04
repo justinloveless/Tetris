@@ -135,30 +135,56 @@ public class LShape extends Shape{
 	*/
 	public void rotate()
 	{
+		/*  S0
+		 * (S1)
+		 *  S2 S3
+		 */
 		if( square[1].getRow() + 1 == square[3].getRow()
 			&& square[1].getCol() + 1 == square[3].getCol()){
+			if (square[1].getCol() < 1){
+				
+			}else {
+				square[0].setRow(1);
+				square[0].setCol(1);
+				square[2].setCol(-1);
+				square[2].setRow(-1);
+				square[3].setCol(-2);
+			}
+			
+		}
+		/*
+		 * S2 (S1) S0
+		 * S3
+		 */
+		else if( (square[1].getRow() + 1 == square[3].getRow() )
+				&& (square[1].getCol() - 1 == square[3].getCol())){
 			
 			square[0].setRow(1);
 			square[0].setCol(-1);
-			square[2].setCol(-1);
-			square[3].setRow(-1);
-		}
-		else if( (square[1].getRow() + 1 == square[2].getRow() )
-				&& (square[1].getCol() - 1 == square[2].getCol())){
-			
-			square[0].setRow(-1);
 			square[2].setCol(1);
-			square[3].setRow(-1);
-			square[3].setCol(-1);
-		}
-		else if( (square[1].getRow() - 1 == square[0].getRow() )
-				&& (square[1].getCol() - 1 == square[0].getCol())){
-			
-			square[0].setRow(1);
 			square[2].setRow(-1);
-			square[2].setCol(1);
-			square[3].setCol(1);
+			square[3].setRow(-2);
 		}
+		/* S3  S2
+		 *    (S1) 
+		 *     S0
+		 */
+		else if( (square[1].getRow() - 1 == square[3].getRow() )
+				&& (square[1].getCol() - 1 == square[3].getCol())){
+			if (square[1].getCol()  > (grid.WIDTH - 2)){
+				
+			}else {
+				square[0].setRow(-1);
+				square[0].setCol(-1);
+				square[2].setRow(1);
+				square[2].setCol(1);
+				square[3].setCol(2);
+			}
+		}
+		/*         S3
+		 * S0 (S1) S2
+		 * 
+		 */
 		else if( (square[1].getRow() - 1 == square[3].getRow() )
 				&& (square[1].getCol() + 1 == square[3].getCol())){
 			

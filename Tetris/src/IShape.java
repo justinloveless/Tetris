@@ -11,7 +11,8 @@ import java.awt.Point;
  * 
  * Sq <br>
  * Sq <br>
- * Sq Sq <br>
+ * Sq <br>
+ * Sq <br>
  * 
  * The game piece "floats above" the Grid. The (row, col) coordinates are the
  * location of the middle Square on the side within the Grid
@@ -135,20 +136,26 @@ public class IShape extends Shape{
 	*/
 	public void rotate()
 	{
-		
+		// I-Shape is vertical
 		if( square[1].getRow() - 1 == square[0].getRow()
 				&& square[1].getCol() == square[0].getCol()){
-		
-			square[0].setRow(1);
-			square[0].setCol(-1);
-			square[2].setRow(-1);
-			square[2].setCol(1);
-			square[3].setRow(-2);
-			square[3].setCol(2);
+			//if I-Shape is too close to either edge, don't rotate
+			if (square[1].getCol() > (grid.WIDTH - 3)
+					|| square[1].getCol() < 1){
+				
+			}else {
+				square[0].setRow(1);
+				square[0].setCol(-1);
+				square[2].setRow(-1);
+				square[2].setCol(1);
+				square[3].setRow(-2);
+				square[3].setCol(2);
+			}
 		}
+		// I-Shape is horizontal
 		else if( square[1].getRow() == square[0].getRow()
 				&& square[1].getCol() - 1 == square[0].getCol()){
-		
+			
 			square[0].setRow(-1);
 			square[0].setCol(1);
 			square[2].setRow(1);

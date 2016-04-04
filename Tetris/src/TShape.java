@@ -9,9 +9,8 @@ import java.awt.Point;
  * 
  * This piece is made up of 4 squares in the following configuration:
  * 
- * Sq <br>
- * Sq <br>
- * Sq Sq <br>
+ * Sq Sq Sq <br>
+ *    Sq <br>
  * 
  * The game piece "floats above" the Grid. The (row, col) coordinates are the
  * location of the middle Square on the side within the Grid
@@ -135,7 +134,11 @@ public class TShape extends Shape{
 	*/
 	public void rotate()
 	{
-		
+
+		/*
+		 * S0 (S1) S2
+		 *     S3
+		 */
 		if( square[1].getRow() == square[0].getRow()
 				&& square[1].getCol() - 1 == square[0].getCol()){
 				
@@ -145,10 +148,16 @@ public class TShape extends Shape{
 				square[2].setCol(-1);
 				square[3].setRow(-1);
 				square[3].setCol(-1);
-			}
-			else if( (square[1].getRow() - 1 == square[0].getRow() )
-					&& (square[1].getCol() == square[0].getCol())){
+		}
+		/*     S2
+		 * S3 (S1)
+		 *     S2
+		 */
+		else if( (square[1].getRow() - 1 == square[0].getRow() )
+				&& (square[1].getCol() == square[0].getCol())){
+			if (square[1].getCol() > (grid.WIDTH - 2)){
 				
+			}else {
 				square[0].setRow(1);
 				square[0].setCol(1);
 				square[2].setRow(-1);
@@ -156,19 +165,30 @@ public class TShape extends Shape{
 				square[3].setRow(-1);
 				square[3].setCol(1);
 			}
-			else if( (square[1].getRow()  == square[0].getRow() )
-					&& (square[1].getCol() + 1 == square[0].getCol())){
+		}
+		/*     S3
+		 * S2 (S1) S0
+		 * 
+		 */
+		else if( (square[1].getRow()  == square[0].getRow() )
+				&& (square[1].getCol() + 1 == square[0].getCol())){
+			
+			square[0].setRow(1);
+			square[0].setCol(-1);
+			square[2].setRow(-1);
+			square[2].setCol(1);
+			square[3].setRow(1);
+			square[3].setCol(1);
+		}
+		/*  S2
+		 * (S1) S3
+		 *  S0
+		 */
+		else if( (square[1].getRow() + 1 == square[0].getRow() )
+				&& (square[1].getCol() == square[0].getCol())){
+			if (square[1].getCol() < 1){
 				
-				square[0].setRow(1);
-				square[0].setCol(-1);
-				square[2].setRow(-1);
-				square[2].setCol(1);
-				square[3].setRow(1);
-				square[3].setCol(1);
-			}
-			else if( (square[1].getRow() + 1 == square[0].getRow() )
-					&& (square[1].getCol() == square[0].getCol())){
-				
+			}else {
 				square[0].setRow(-1);
 				square[0].setCol(-1);
 				square[2].setRow(1);
@@ -176,6 +196,7 @@ public class TShape extends Shape{
 				square[3].setRow(1);
 				square[3].setCol(-1);
 			}
+		}
 		
 		
 	}

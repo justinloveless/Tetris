@@ -9,8 +9,7 @@ import java.awt.Point;
  * 
  * This piece is made up of 4 squares in the following configuration:
  * 
- * Sq <br>
- * Sq <br>
+ * Sq Sq <br>
  * Sq Sq <br>
  * 
  * The game piece "floats above" the Grid. The (row, col) coordinates are the
