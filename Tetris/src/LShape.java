@@ -246,47 +246,144 @@ public class LShape {
 				}
 		}
 		else if(this.getShapeType() == 3){
-/*			if( square[1].getRow() + 1 == square[2].getRow()
-					&& square[1].getCol() == square[2].getCol()){
-					
-					square[0].setCol(-2);
-					square[2].setRow(-2);
-					square[2].setCol(-1);
-					square[3].setCol(1);
-				}
-				else if( (square[1].getRow() - 1 == square[2].getRow() )
-						&& (square[1].getCol() - 1 == square[2].getCol())){
+			if( square[1].getRow() == square[0].getRow()
+					&& square[1].getCol() - 1 == square[0].getCol()){
 					
 					square[0].setRow(-1);
 					square[0].setCol(1);
-					square[2].setRow(1);
-					square[3].setRow(-2);
-					square[3].setCol(1);
+					square[2].setRow(-1);
+					square[2].setCol(-1);
+					square[3].setCol(-2);
 				}
-				else if( (square[1].getRow()  == square[2].getRow() )
-						&& (square[1].getCol() - 1 == square[2].getCol())){
+				else if( (square[1].getRow() - 1 == square[0].getRow() )
+						&& (square[1].getCol() == square[0].getCol())){
 					
 					square[0].setRow(1);
 					square[0].setCol(1);
 					square[2].setRow(-1);
 					square[2].setCol(1);
+					square[3].setRow(-2);
+				}
+				else if( (square[1].getRow()  == square[0].getRow() )
+						&& (square[1].getCol() + 1 == square[0].getCol())){
+					
+					square[0].setRow(1);
+					square[0].setCol(-1);
+					square[2].setRow(1);
+					square[2].setCol(1);
+					square[3].setCol(2);
+				}
+				else if( (square[1].getRow() + 1 == square[0].getRow() )
+						&& (square[1].getCol() == square[0].getCol())){
+					
+					square[0].setRow(-1);
+					square[0].setCol(-1);
+					square[2].setRow(1);
+					square[2].setCol(-1);
 					square[3].setRow(2);
 				}
-				else if( (square[1].getRow() - 1 == square[2].getRow() )
-						&& (square[1].getCol() == square[2].getCol())){
-					
-					square[2].setRow(2);
-					square[3].setCol(-2);
-				}
-*/		}
+		}
 		else if(this.getShapeType() == 4){
-			
+			if( square[1].getRow() - 1 == square[0].getRow()
+					&& square[1].getCol() == square[0].getCol()){
+					
+					square[0].setRow(1);
+					square[0].setCol(1);
+					square[2].setRow(-1);
+					square[2].setCol(-1);
+					square[3].setRow(-2);
+				}
+				else if( (square[1].getRow() == square[0].getRow() )
+						&& (square[1].getCol() + 1 == square[0].getCol())){
+					
+					square[0].setRow(1);
+					square[0].setCol(-1);
+					square[2].setRow(-1);
+					square[2].setCol(1);
+					square[3].setCol(2);
+				}
+				else if( (square[1].getRow() + 1  == square[0].getRow() )
+						&& (square[1].getCol() == square[0].getCol())){
+					
+					square[0].setRow(-1);
+					square[0].setCol(-1);
+					square[2].setRow(1);
+					square[2].setCol(1);
+					square[3].setRow(2);
+				}
+				else if( (square[1].getRow() == square[0].getRow() )
+						&& (square[1].getCol() - 1 == square[0].getCol())){
+					
+					square[0].setRow(-1);
+					square[0].setCol(1);
+					square[2].setRow(1);
+					square[2].setCol(-1);
+					square[3].setCol(-2);
+				}		
 		}
 		else if(this.getShapeType() == 5){
-			
+			if( square[1].getRow() == square[0].getRow()
+					&& square[1].getCol() - 1 == square[0].getCol()){
+					
+					square[0].setRow(-1);
+					square[0].setCol(1);
+					square[2].setRow(1);
+					square[2].setCol(-1);
+					square[3].setRow(-1);
+					square[3].setCol(-1);
+				}
+				else if( (square[1].getRow() - 1 == square[0].getRow() )
+						&& (square[1].getCol() == square[0].getCol())){
+					
+					square[0].setRow(1);
+					square[0].setCol(1);
+					square[2].setRow(-1);
+					square[2].setCol(-1);
+					square[3].setRow(-1);
+					square[3].setCol(1);
+				}
+				else if( (square[1].getRow()  == square[0].getRow() )
+						&& (square[1].getCol() + 1 == square[0].getCol())){
+					
+					square[0].setRow(1);
+					square[0].setCol(-1);
+					square[2].setRow(-1);
+					square[2].setCol(1);
+					square[3].setRow(1);
+					square[3].setCol(1);
+				}
+				else if( (square[1].getRow() + 1 == square[0].getRow() )
+						&& (square[1].getCol() == square[0].getCol())){
+					
+					square[0].setRow(-1);
+					square[0].setCol(-1);
+					square[2].setRow(1);
+					square[2].setCol(1);
+					square[3].setRow(1);
+					square[3].setCol(-1);
+				}
 		}
 		else if(this.getShapeType() == 6){
-			
+				if( square[1].getRow() - 1 == square[0].getRow()
+						&& square[1].getCol() == square[0].getCol()){
+				
+					square[0].setRow(1);
+					square[0].setCol(-1);
+					square[2].setRow(-1);
+					square[2].setCol(1);
+					square[3].setRow(-2);
+					square[3].setCol(2);
+				}
+				else if( square[1].getRow() == square[0].getRow()
+						&& square[1].getCol() - 1 == square[0].getCol()){
+				
+					square[0].setRow(-1);
+					square[0].setCol(1);
+					square[2].setRow(1);
+					square[2].setCol(-1);
+					square[3].setRow(2);
+					square[3].setCol(-2);
+				}
 		}
 		
 	}
