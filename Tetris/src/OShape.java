@@ -18,7 +18,7 @@ import java.awt.Point;
  * 
  * 
  */
-public class LShape extends Shape{
+public class OShape extends Shape{
 	
 	private int shapeType;
 	
@@ -41,7 +41,7 @@ public class LShape extends Shape{
 	private static final int PIECE_COUNT = 4;
 
 	/**
-	 * Creates an L-Shape piece. See class description for actual location of r
+	 * Creates an O-Shape piece. See class description for actual location of r
 	 * and c
 	 * 
 	 * @param r
@@ -52,16 +52,16 @@ public class LShape extends Shape{
 	 *            the grid for this game piece
 	 * 
 	 */
-	public LShape(int r, int c, Grid g) {
+	public OShape(int r, int c, Grid g) {
 		super(r,c,g);
 		grid = g;
 		square = new Square[PIECE_COUNT];
 		ableToMove = true;
 		// Create the squares
-		square[0] = new Square(g, r - 1, c, Color.orange, true);
-		square[1] = new Square(g, r, c, Color.orange, true);
-		square[2] = new Square(g, r + 1, c, Color.orange, true);
-		square[3] = new Square(g, r + 1, c + 1, Color.orange, true);
+		square[0] = new Square(g, r, c - 1, Color.yellow, true);
+		square[1] = new Square(g, r, c, Color.yellow, true);
+		square[2] = new Square(g, r + 1, c, Color.yellow, true);
+		square[3] = new Square(g, r + 1, c - 1, Color.yellow, true);
 		
 	}
 
@@ -135,40 +135,6 @@ public class LShape extends Shape{
 	*/
 	public void rotate()
 	{
-		if( square[1].getRow() + 1 == square[3].getRow()
-			&& square[1].getCol() + 1 == square[3].getCol()){
-			
-			square[0].setRow(1);
-			square[0].setCol(-1);
-			square[2].setCol(-1);
-			square[3].setRow(-1);
-		}
-		else if( (square[1].getRow() + 1 == square[2].getRow() )
-				&& (square[1].getCol() - 1 == square[2].getCol())){
-			
-			square[0].setRow(-1);
-			square[2].setCol(1);
-			square[3].setRow(-1);
-			square[3].setCol(-1);
-		}
-		else if( (square[1].getRow() - 1 == square[0].getRow() )
-				&& (square[1].getCol() - 1 == square[0].getCol())){
-			
-			square[0].setRow(1);
-			square[2].setRow(-1);
-			square[2].setCol(1);
-			square[3].setCol(1);
-		}
-		else if( (square[1].getRow() - 1 == square[3].getRow() )
-				&& (square[1].getCol() + 1 == square[3].getCol())){
-			
-			square[0].setRow(-1);
-			square[0].setCol(1);
-			square[2].setRow(1);
-			square[2].setCol(-1);
-			square[3].setRow(2);
-		}
-		
 		
 	}
 }

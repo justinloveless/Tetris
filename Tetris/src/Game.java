@@ -16,7 +16,7 @@ public class Game {
 
 	private Tetris display; // the visual for the Tetris game
 
-	private LShape piece; // the current piece that is dropping
+	private Shape piece; // the current piece that is dropping
 	
 	private boolean isOver; // has the game finished?
 
@@ -30,9 +30,9 @@ public class Game {
 		grid = new Grid();
 		this.display = display;
 		
-		Random rand = new Random();
-		
-		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+//		Random rand = new Random();
+//		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+		getNewPiece();
 		isOver = false;
 	}
 
@@ -95,8 +95,9 @@ public class Game {
 	/** Updates the piece */
 	private void updatePiece() {
 		if (piece == null) {
-			Random rand = new Random();
-			piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+//			Random rand = new Random();
+//			piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+			getNewPiece();
 		}
 
 		// set Grid positions corresponding to frozen piece
@@ -121,6 +122,36 @@ public class Game {
             updatePiece();
             grid.checkRows();
             display.update();
+        }
+        
+        
+        /** get new piece **/
+        public void getNewPiece(){
+        	Random rand = new Random();
+        	switch (rand.nextInt(7)){
+        	case 0: // L Shape
+        		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 1: // O Shape
+        		piece = new OShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 2: // S Shape
+        		piece = new SShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 3: // Z Shape
+        		piece = new ZShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 4: // J Shape
+        		piece = new JShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 5: // T Shape
+        		piece = new TShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 6: // I Shape
+        		piece = new IShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	}
+        	
         }
 
 
