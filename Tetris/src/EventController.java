@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+/// This is a useless comment to test out committing to GitHub
+
 public class EventController extends KeyAdapter implements ActionListener {
 
 	private Game game; // current game: grid and current piece
