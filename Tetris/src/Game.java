@@ -56,7 +56,15 @@ public class Game {
 	 *            direction to move
 	 */
 	public void movePiece(Direction direction) {
-		if (piece != null) {
+		if (direction == Direction.UP){
+			while(piece != null){
+				piece.move(Direction.DOWN);
+				updatePiece();
+		        grid.checkRows();
+		        display.update();
+			}
+		}
+		else if (piece != null) {
 			piece.move(direction);
 		}
 		updatePiece();
