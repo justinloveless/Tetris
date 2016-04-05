@@ -9,13 +9,21 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Tetris extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Game game;
 
 	/**
@@ -25,15 +33,16 @@ public class Tetris extends JPanel {
 		game = new Game(this);
 		JFrame f = new JFrame("Tetris Game");
 		f.add(this);
-		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		f.setSize(400, 550);
 		f.setVisible(true);
 		EventController ec = new EventController(game);
 		f.addKeyListener(ec);
 		setBackground(Color.DARK_GRAY);
 		
-		
 	}
+	
 
 	/**
 	 * Updates the display
@@ -55,8 +64,16 @@ public class Tetris extends JPanel {
 		}
 	}
 
-	public static void main(String[] args) {
-		new Tetris();
-	}
+	public static void main(String[] args) throws Exception {
+		
+    	File open = new File("Tetris.wav");;
+        AudioInputStream ais = AudioSystem.getAudioInputStream(open);
+        final Clip clip = AudioSystem.getClip();
+        clip.open( ais );
+        clip.start();
+        clip.loop(-1);
 
+		new Tetris();
+		
+	}
 }

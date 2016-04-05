@@ -20,7 +20,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private Game game; // current game: grid and current piece
 	private Timer timer;
 
-	private static final double PIECE_MOVE_TIME = 0.8;  // wait 0.8 s every time
+	private static final double PIECE_MOVE_TIME = 0.4;  // wait 0.8 s every time
 														// the piece moves down
 														// increase to slow it
 														// down
@@ -53,6 +53,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 		if (e.getKeyCode() == KeyEvent.VK_Q) {
 			timer.stop();
 			((JFrame) e.getSource()).dispose();
+			System.exit(0);
 		}
 		if (!gameOver) {
 			switch (e.getKeyCode()) {
