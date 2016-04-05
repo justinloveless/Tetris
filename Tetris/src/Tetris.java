@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
+import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -65,13 +66,15 @@ public class Tetris extends JPanel {
 	}
 
 	public static void main(String[] args) throws Exception {
-		
+		try{
     	File open = new File("Tetris.wav");;
         AudioInputStream ais = AudioSystem.getAudioInputStream(open);
         final Clip clip = AudioSystem.getClip();
         clip.open( ais );
         clip.start();
         clip.loop(-1);
+		}
+		catch(IOException e){}
 
 		new Tetris();
 		
