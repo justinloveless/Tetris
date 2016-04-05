@@ -20,11 +20,18 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private Game game; // current game: grid and current piece
 	private Timer timer;
 
-	private static final double PIECE_MOVE_TIME = 0.4;  // wait 0.8 s every time
+	private static final double PIECE_MOVE_TIME = 0.8;  // wait 0.8 s every time
 														// the piece moves down
 														// increase to slow it
-														// down
-
+	private boolean stateOfTime = true;													// down
+	
+	public void setStateOfTime(boolean state){
+		this.stateOfTime = state;
+	}
+	
+	public boolean getStateOfTime(){
+		return stateOfTime;
+	}
 	private boolean gameOver;
 
 	/**
@@ -55,7 +62,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 			((JFrame) e.getSource()).dispose();
 			System.exit(0);
 		}
-		if (!gameOver) {
+		if (!gameOver  && this.getStateOfTime()) {
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 				handleMove(Direction.UP);
@@ -72,8 +79,21 @@ public class EventController extends KeyAdapter implements ActionListener {
 			case KeyEvent.VK_SPACE:
 				game.rotatePiece();
 				break;
+			case KeyEvent.VK_P:
+				timer.stop();
+				setStateOfTime(false);
+				break;
 			}
 		}
+		else if (!gameOver  && !this.getStateOfTime()){
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_P:
+					timer.start();
+					setStateOfTime(true);
+					break;
+				}
+		}
+		
 	}
 
 	/** Updates the game periodically based on a timer event */
