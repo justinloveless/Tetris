@@ -136,6 +136,8 @@ public class EventController extends KeyAdapter implements ActionListener {
 			case KeyEvent.VK_P:
 				timer.stop();
 				setStateOfTime(false);
+				stopClip();
+				this.music = false;
 				break;
 			}
 		}
@@ -144,6 +146,8 @@ public class EventController extends KeyAdapter implements ActionListener {
 				case KeyEvent.VK_P:
 					timer.start();
 					setStateOfTime(true);
+					startClip();
+					this.music = true;
 					break;
 				}
 		}
