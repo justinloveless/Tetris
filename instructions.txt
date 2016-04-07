@@ -1,0 +1,19 @@
+
+ENTER - When game over,
+	start new game
+	
+SPACE - Rotate piece
+
+Arrow Left - Move piece left
+
+Arrow Right - Move piece right
+
+Arrow Down - Move piece down
+
+Arrow Up - Drop piece 
+
+M - Toggle Music ON/OFF
+
+P - Pause/Start game
+
+Q - Quit Game
