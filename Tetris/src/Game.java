@@ -35,6 +35,7 @@ public class Game {
 		getNewPiece();
 		isOver = false;
 	}
+	
 
 	/**
 	 * Draws the current state of the game
@@ -72,6 +73,15 @@ public class Game {
         display.update();
 		
                 
+	}
+	
+	public void removeAll(){
+		grid.removeAll();
+		display.update();
+	}
+	
+	public void isNotOver(){
+		isOver = false;
 	}
 
 	/**

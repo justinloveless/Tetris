@@ -91,9 +91,10 @@ public class Square {
 		// remember to check the edges of the grid
 		switch (direction) {
 		case DOWN:
-			if (row == (Grid.HEIGHT - 1) || grid.isSet(row + 1, col))
-				move = false;
-			break;
+						if (row == (Grid.HEIGHT - 1) ||
+										grid.isSet(row + 1, col))
+							move = false;
+						break;
 
 		// currently doesn't support checking LEFT or RIGHT
 		// MODIFY so that it correctly returns if it can move left or right
@@ -102,10 +103,12 @@ public class Square {
                             move=false;
                         break;
 		case RIGHT:
-                        // INSERT YOUR CODE HERE
-						if(col == (Grid.WIDTH - 1) || grid.isSet(row, col + 1))
+						if(col == (Grid.WIDTH - 1) || 
+										grid.isSet(row, col + 1))
 							move = false;
                         break;
+		default:
+						break;
 		}
 		return move;
 	}

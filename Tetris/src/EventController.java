@@ -97,6 +97,13 @@ public class EventController extends KeyAdapter implements ActionListener {
 			((JFrame) e.getSource()).dispose();
 			System.exit(0);
 		}
+		
+		if (gameOver && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			game.removeAll();
+			timer.start();
+			gameOver = false;
+			game.isNotOver();
+		}
 			
 		if(e.getKeyCode() == KeyEvent.VK_M){
 			if(this.music == true){

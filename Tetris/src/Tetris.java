@@ -50,9 +50,9 @@ public class Tetris extends JPanel {
 		super.paintComponent(g);
 		game.draw(g);
 		if (game.isGameOver()) {
-			g.setFont(new Font("Palatino", Font.BOLD, 40));
+			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
-			g.drawString("GAME OVER", 80, 300);
+			g.drawString("GAME OVER", 107, 200);
 		}
 	}
 

@@ -85,7 +85,16 @@ public class Grid {
 	 * If a solid row is found and removed, all rows above it are moved down and
 	 * the top row set to empty
 	 */
-        
+        void removeAll(){
+        	
+        	for(int row = 0; row < HEIGHT; row++){
+                for (int col = 0; col < WIDTH; col++) {
+                                set(row,col,EMPTY);
+                }
+            }
+        }
+	
+	
         private void removeRow(int r)
         {
             //change color of that row to white
