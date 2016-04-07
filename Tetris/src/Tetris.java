@@ -26,6 +26,8 @@ public class Tetris extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Game game;
+	private Clip circusMusic;
+	private Clip gameOver;
 
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
@@ -67,7 +69,7 @@ public class Tetris extends JPanel {
 
 	public static void main(String[] args) throws Exception {
 		try{
-    	File open = new File("Tetris.wav");;
+    	File open = new File("Tetris.wav");
         AudioInputStream ais = AudioSystem.getAudioInputStream(open);
         final Clip clip = AudioSystem.getClip();
         clip.open( ais );
@@ -79,4 +81,20 @@ public class Tetris extends JPanel {
 		new Tetris();
 		
 	}
+	
+	public void startClip(Clip clip, AudioInputStream ais, boolean loop) throws Exception{
+		
+		clip = AudioSystem.getClip();
+		clip.open(ais);
+		clip.start();
+		clip.loop(-1);	
+		
+	}
+
+	public void playMusic(int music){
+		switch(music){
+		
+		}
+	}
+	
 }

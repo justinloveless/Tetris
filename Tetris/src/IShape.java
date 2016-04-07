@@ -136,14 +136,22 @@ public class IShape extends Shape{
 	*/
 	public void rotate()
 	{
-		// I-Shape is vertical
-		if( square[1].getRow() - 1 == square[0].getRow()
-				&& square[1].getCol() == square[0].getCol()){
-			//if I-Shape is too close to either edge, don't rotate
-			if (square[1].getCol() > (grid.WIDTH - 3)
-					|| square[1].getCol() < 1){
-				
-			}else {
+		/*  S0
+		 * (S1) 
+		 *  S2
+		 *  S3
+		 */
+		int pivRow = square[1].getRow();
+		int pivCol = square[1].getCol();
+		boolean canRotate = true;
+		
+		if( pivRow - 1 == square[0].getRow()
+				&& pivCol == square[0].getCol()){
+			/* if I-Shape is too close to either edge 
+			 * OR will pass through another square, don't rotate
+			 */
+			//TODO determine canRotate
+			if (pivCol < (grid.WIDTH - 3) && pivCol > 0 && canRotate){
 				square[0].setRow(1);
 				square[0].setCol(-1);
 				square[2].setRow(-1);
@@ -152,16 +160,57 @@ public class IShape extends Shape{
 				square[3].setCol(2);
 			}
 		}
-		// I-Shape is horizontal
+		/*
+		 * 
+		 * S0 (S1) S2 S3
+		 * 
+		 */
 		else if( square[1].getRow() == square[0].getRow()
 				&& square[1].getCol() - 1 == square[0].getCol()){
-			
+
+			//TODO determine canRotate
 			square[0].setRow(-1);
 			square[0].setCol(1);
 			square[2].setRow(1);
 			square[2].setCol(-1);
 			square[3].setRow(2);
 			square[3].setCol(-2);
+		}
+		/*  S3
+		 *  S2
+		 * (S1)
+		 *  S0
+		 */
+		else if( square[1].getRow() + 1== square[0].getRow()
+				&& square[1].getCol()  == square[0].getCol()){
+			//TODO determine canRotate
+			if (square[1].getCol() > (grid.WIDTH - 3)
+					|| square[1].getCol() < 1){
+				
+			}else {
+				square[0].setRow(-1);
+				square[0].setCol(-1);
+				square[2].setRow(1);
+				square[2].setCol(1);
+				square[3].setRow(2);
+				square[3].setCol(2);
+			}
+		}
+		/*
+		 * 
+		 * S3 S2 (S1) S0
+		 * 
+		 */
+		else if( square[1].getRow() == square[0].getRow()
+				&& square[1].getCol() + 1 == square[0].getCol()){
+			//TODO determine canRotate
+			
+			square[0].setRow(1);
+			square[0].setCol(-1);
+			square[2].setRow(-1);
+			square[2].setCol(1);
+			square[3].setRow(-2);
+			square[3].setCol(2);
 		}
 		
 		
