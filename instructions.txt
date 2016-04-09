@@ -17,3 +17,16 @@ M - Toggle Music ON/OFF
 P - Pause/Start game
 
 Q - Quit Game
+
+PAUSED is now displayed when paused.
+
+S - saves the current block, and calls
+for a new block, but if you try to access
+the save block, it will not let you. For
+every new block that is called, you can
+only switch with saved once.
+
+After every 5 rows completed, the timer
+is reduced.
+
+Timer reduction added.

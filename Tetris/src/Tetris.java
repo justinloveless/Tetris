@@ -17,9 +17,9 @@ public class Tetris extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private Game game;
 
+	private Game game;
+	private EventController ec;
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
 	 * @throws Exception 
@@ -31,7 +31,7 @@ public class Tetris extends JPanel {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(400, 550);
 		f.setVisible(true);
-		EventController ec = new EventController(game);
+		ec = new EventController(game);
 		f.addKeyListener(ec);
 		setBackground(Color.DARK_GRAY);
 		
@@ -53,11 +53,21 @@ public class Tetris extends JPanel {
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
 			g.drawString("GAME OVER", 107, 200);
+			ec.resetTimerEc();
+		}
+		else if(game.getGameIsPaused()){
+			g.setFont(new Font("HonMincho", Font.BOLD, 30));
+			g.setColor(Color.BLACK);
+			g.drawString("PAUSED", 140, 200);
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
 		
 		new Tetris();
+	}
+	public void updateTimer() {
+			ec.updateTimerEc();
+		
 	}
 }
