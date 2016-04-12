@@ -88,7 +88,6 @@ public class EventController extends KeyAdapter implements ActionListener {
 	/**
 	 * Responds to special keys being pressed.
 	 * 
-	 * Currently just responds to the space key and the q(uit) key
 	 */
 	public void keyPressed(KeyEvent e) {
 		// if 'Q', quit the game
@@ -136,13 +135,14 @@ public class EventController extends KeyAdapter implements ActionListener {
 			case KeyEvent.VK_S:
 				game.savePiece();
 				break;
+			//Paused game
 			case KeyEvent.VK_P:
 				timer.stop();
 				setStateOfTime(false);
 				game.gamePaused(true);
 				break;
 			}
-		}
+		}//If already paused, start the game.
 		else if (!gameOver  && !this.getStateOfTime()){
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_P:
@@ -170,6 +170,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 			timer.stop();
 	}
 	
+	//Called when player wants a new game. Resets the timer.
 	public void resetTimerEc(){
 		
 		PIECE_MOVE_TIME = 0.8;
@@ -178,28 +179,19 @@ public class EventController extends KeyAdapter implements ActionListener {
 		timer.setCoalesce(true); 
 		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);
 	}
-
+	
+	//When 5 lines are cleared, makes timer faster.
 	public void updateTimerEc() {
 		
 		timer.stop();
 		
-		if(PIECE_MOVE_TIME > 0.3){
-			PIECE_MOVE_TIME -= 0.2;
-		}
-		else if(PIECE_MOVE_TIME > 0.15 ){
-			PIECE_MOVE_TIME -= 0.05;
-		}
-		else if(PIECE_MOVE_TIME > 0.01 && PIECE_MOVE_TIME < 0.15){
-			PIECE_MOVE_TIME -= 0.02;
-		}
-		else{
-			System.out.println("You Win, Congrats");
-		}
+		PIECE_MOVE_TIME/=1.2;
 		
-		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);
+		//Creates the new timer.
+		System.out.println("PIECE_MOVE_TIME = " + PIECE_MOVE_TIME);//debug
 		double delay = 1000 * PIECE_MOVE_TIME; // in milliseconds
 		timer = new Timer((int) delay, this);
-		timer.setCoalesce(true); // if multiple events pending, bunch them to
+		timer.setCoalesce(true);
 		timer.start();
 		
 	}
