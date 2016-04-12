@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Tetris.wav</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Tetris.wav</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
