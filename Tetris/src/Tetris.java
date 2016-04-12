@@ -66,6 +66,7 @@ public class Tetris extends JPanel {
 		
 		new Tetris();
 	}
+	
 	public void updateTimer() {
 			ec.updateTimerEc();
 		

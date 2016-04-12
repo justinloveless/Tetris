@@ -86,16 +86,6 @@ public class Grid {
 	 * If a solid row is found and removed, all rows above it are moved down and
 	 * the top row set to empty
 	 */
-        void removeAll(){
-        	
-        	for(int row = 0; row < HEIGHT; row++){
-                for (int col = 0; col < WIDTH; col++) {
-                                set(row,col,EMPTY);
-                }
-            }
-        }
-	
-	
         private void removeRow(int r)
         {
             //change color of that row to white
@@ -116,6 +106,16 @@ public class Grid {
                 }
             }
         }
+        
+        //Removes all pieces from grid.
+        void removeAll(){
+        	
+        	for(int row = 0; row < HEIGHT; row++){
+                for (int col = 0; col < WIDTH; col++) {
+                                set(row,col,EMPTY);
+                }
+            }
+        }
 
 
         public void checkRows() {
@@ -132,7 +132,7 @@ public class Grid {
             } 
 
         }
-        
+        //If 5 rows cleared, update timer
         public int checkRowsCleared(){
         	
         	if(numOfLinesCleared >= 5){

@@ -48,7 +48,8 @@ public class Game {
 		getNewPiece();
 		isOver = false;
 	}
-	
+	//Stops game timer and displays pause 
+	//on screen.
 	public void gamePaused(boolean state){
 		if(state){
 			gameIsPaused = true;
@@ -59,6 +60,7 @@ public class Game {
 		}
 	}
 	
+	//Checks if game is paused.
 	public boolean getGameIsPaused(){
 		return gameIsPaused;
 	}
@@ -84,6 +86,7 @@ public class Game {
 	
 
 	public void movePiece(Direction direction) {
+		//Is up is pressed, bring piece down immediately
 		if (direction == Direction.UP){
 			while(piece != null){
 				piece.move(Direction.DOWN);
@@ -102,11 +105,13 @@ public class Game {
                 
 	}
 	
+	//Removes all pieces from grid
 	public void removeAll(){
 		grid.removeAll();
 		display.update();
 	}
 	
+	//If new game, reset to game not over
 	public void isNotOver(){
 		isOver = false;
 	}
@@ -140,9 +145,11 @@ public class Game {
 	/** Updates the piece */
 	private void updatePiece() {
 		if (piece == null) {
-//			Random rand = new Random();
-//			piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+
 			getNewPiece();
+			
+			//Checks if 5 rows are cleared, if so
+			//update the timer, then reset rows cleared.
 			int check = grid.checkRowsCleared();
 			
 			if(check == 1){
@@ -174,7 +181,8 @@ public class Game {
             display.update();
         }
         
-        
+        //Used to store current piece in queue.
+        //Note: can only be used once per piece.
     	public void savePiece(){
     		if(!savedState){
     			piece = null;
@@ -193,6 +201,7 @@ public class Game {
  
     	}
         
+    	//Gets saved piece.
         public void getSavedPiece(){
         	
         	alreadySwitched = true;
