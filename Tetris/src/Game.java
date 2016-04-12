@@ -109,6 +109,7 @@ public class Game {
 	public void removeAll(){
 		grid.removeAll();
 		display.update();
+		display.setLevel(1);
 	}
 	
 	//If new game, reset to game not over

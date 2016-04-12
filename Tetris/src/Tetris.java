@@ -20,11 +20,13 @@ public class Tetris extends JPanel {
 
 	private Game game;
 	private EventController ec;
+	private int level;
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
 	 * @throws Exception 
 	 */
 	public Tetris() throws Exception{
+		level = 1;
 		game = new Game(this);
 		JFrame f = new JFrame("Tetris Game");
 		f.add(this);
@@ -35,6 +37,10 @@ public class Tetris extends JPanel {
 		f.addKeyListener(ec);
 		setBackground(Color.DARK_GRAY);
 		
+	}
+	
+	public void setLevel(int restart){
+		level = restart;
 	}
 	/**
 	 * Updates the display
@@ -49,11 +55,17 @@ public class Tetris extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		game.draw(g);
+		
+		g.setFont(new Font("HonMincho", Font.BOLD, 30));
+		g.setColor(Color.ORANGE);
+		g.drawString("LV: " + level, 10,Grid.TOP + 22);
+		
 		if (game.isGameOver()) {
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
 			g.drawString("GAME OVER", 107, 200);
 			ec.resetTimerEc();
+
 		}
 		else if(game.getGameIsPaused()){
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
@@ -68,6 +80,8 @@ public class Tetris extends JPanel {
 	}
 	
 	public void updateTimer() {
+			level++;
+			repaint();
 			ec.updateTimerEc();
 		
 	}
