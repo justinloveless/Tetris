@@ -34,7 +34,8 @@ public class Grid {
 	public static final int TOP = 50; // pixel position of top of grid
 
 	public static final Color EMPTY = Color.WHITE;
-
+	
+	private int numOfLinesCleared = 0;
 	/**
 	 * Creates the grid
 	 */
@@ -126,9 +127,20 @@ public class Grid {
                 if(col == WIDTH) // a row is found
                 {
                     removeRow(row);
+                    numOfLinesCleared++;
                 }
             } 
 
+        }
+        
+        public int checkRowsCleared(){
+        	
+        	if(numOfLinesCleared >= 5){
+        		numOfLinesCleared = 0;
+        		return 1;
+        	}
+        	else
+        		return 0;
         }
 
 	/**

@@ -138,6 +138,9 @@ public class Square {
             case RIGHT:
             			col++;
             			break;
+			default:
+						break;
+            		
 			}
 		}
 	}

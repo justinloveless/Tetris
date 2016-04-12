@@ -25,7 +25,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private Game game; // current game: grid and current piece
 	private Timer timer;
 
-	private static final double PIECE_MOVE_TIME = 0.8;  // wait 0.8 s every time
+	private double PIECE_MOVE_TIME = 0.8;  // wait 0.8 s every time
 														// the piece moves down
 														// increase to slow it
 	private boolean stateOfTime = true;													// down
@@ -133,9 +133,13 @@ public class EventController extends KeyAdapter implements ActionListener {
 			case KeyEvent.VK_SPACE:
 				game.rotatePiece();
 				break;
+			case KeyEvent.VK_S:
+				game.savePiece();
+				break;
 			case KeyEvent.VK_P:
 				timer.stop();
 				setStateOfTime(false);
+				game.gamePaused(true);
 				break;
 			}
 		}
@@ -144,6 +148,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 				case KeyEvent.VK_P:
 					timer.start();
 					setStateOfTime(true);
+					game.gamePaused(false);
 					break;
 				}
 		}
@@ -163,6 +168,40 @@ public class EventController extends KeyAdapter implements ActionListener {
 		gameOver = game.isGameOver();
 		if (gameOver)
 			timer.stop();
+	}
+	
+	public void resetTimerEc(){
+		
+		PIECE_MOVE_TIME = 0.8;
+		double delay = 1000 * PIECE_MOVE_TIME; // in milliseconds
+		timer = new Timer((int) delay, this);
+		timer.setCoalesce(true); 
+		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);
+	}
+
+	public void updateTimerEc() {
+		
+		timer.stop();
+		
+		if(PIECE_MOVE_TIME > 0.3){
+			PIECE_MOVE_TIME -= 0.1;
+		}
+		else if(PIECE_MOVE_TIME > 0.15 ){
+			PIECE_MOVE_TIME -= 0.05;
+		}
+		else if(PIECE_MOVE_TIME > 0.01){
+			PIECE_MOVE_TIME -= 0.02;
+		}
+		else{
+			System.out.println("You Win, Congrats");
+		}
+		
+		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);
+		double delay = 1000 * PIECE_MOVE_TIME; // in milliseconds
+		timer = new Timer((int) delay, this);
+		timer.setCoalesce(true); // if multiple events pending, bunch them to
+		timer.start();
+		
 	}
 	
 

@@ -19,7 +19,18 @@ public class Game {
 	private Shape piece; // the current piece that is dropping
 	
 	private boolean isOver; // has the game finished?
-
+	
+	private boolean gameIsPaused;
+	
+	private int savedPieceNum;
+	
+	private int previousPieceNum;
+	
+	private boolean savedState;
+	
+	private boolean alreadySwitched;
+	
+	private boolean newPieceState = false;
 	/**
 	 * Creates a Tetris game
 	 * 
@@ -30,13 +41,27 @@ public class Game {
 		grid = new Grid();
 		this.display = display;
 		
-//		Random rand = new Random();
-//		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
+		gameIsPaused = false;
+		savedState = false;
+		alreadySwitched = false;
+		
 		getNewPiece();
 		isOver = false;
 	}
 	
-
+	public void gamePaused(boolean state){
+		if(state){
+			gameIsPaused = true;
+			display.update();
+		}
+		else{
+			gameIsPaused = false;
+		}
+	}
+	
+	public boolean getGameIsPaused(){
+		return gameIsPaused;
+	}
 	/**
 	 * Draws the current state of the game
 	 * 
@@ -56,6 +81,8 @@ public class Game {
 	 * @param the
 	 *            direction to move
 	 */
+	
+
 	public void movePiece(Direction direction) {
 		if (direction == Direction.UP){
 			while(piece != null){
@@ -116,6 +143,11 @@ public class Game {
 //			Random rand = new Random();
 //			piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
 			getNewPiece();
+			int check = grid.checkRowsCleared();
+			
+			if(check == 1){
+				display.updateTimer();
+			}
 		}
 
 		// set Grid positions corresponding to frozen piece
@@ -131,7 +163,7 @@ public class Game {
 
 	}
 
-            /** Rotate the piece*/
+			/** Rotate the piece*/
         public void rotatePiece()
         {
             if (piece != null) {
@@ -143,10 +175,62 @@ public class Game {
         }
         
         
+    	public void savePiece(){
+    		if(!savedState){
+    			piece = null;
+    			previousPieceNum = savedPieceNum;
+    			getNewPiece();
+    			savedState = true;
+    		}
+    		else if (!alreadySwitched || newPieceState){
+    			
+    			piece = null;
+    			getSavedPiece();
+    			int temp = previousPieceNum;
+    			previousPieceNum = savedPieceNum;
+    			savedPieceNum = temp;
+    		}
+ 
+    	}
+        
+        public void getSavedPiece(){
+        	
+        	alreadySwitched = true;
+        	newPieceState = false;
+        	
+        	switch (previousPieceNum){
+        	case 0: // L Shape
+        		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 1: // O Shape
+        		piece = new OShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 2: // S Shape
+        		piece = new SShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 3: // Z Shape
+        		piece = new ZShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 4: // J Shape
+        		piece = new JShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 5: // T Shape
+        		piece = new TShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	case 6: // I Shape
+        		piece = new IShape(1, Grid.WIDTH / 2 - 1, grid);
+        		break;
+        	}
+        }
+        
         /** get new piece **/
         public void getNewPiece(){
+        	
+        	newPieceState = true;
+        	
         	Random rand = new Random();
-        	switch (rand.nextInt(7)){
+        	savedPieceNum = rand.nextInt(7);
+        	switch (savedPieceNum){
         	case 0: // L Shape
         		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
         		break;
