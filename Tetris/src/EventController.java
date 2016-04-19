@@ -28,7 +28,12 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private double PIECE_MOVE_TIME = 0.8;  // wait 0.8 s every time
 														// the piece moves down
 														// increase to slow it
-	private boolean stateOfTime = true;													// down
+														// down
+	private static final int MAX_LEVEL = 6; // max level to win game
+
+	private static final double MIN_MOVE_TIME = 0.2; // minimum move time for game pieces
+	
+	private boolean stateOfTime = true;	
 	
 	public void setStateOfTime(boolean state){
 		this.stateOfTime = state;
@@ -183,17 +188,24 @@ public class EventController extends KeyAdapter implements ActionListener {
 		
 		timer.stop();
 		
-		if(PIECE_MOVE_TIME > 0.3){
-			PIECE_MOVE_TIME -= 0.1;
+//		if(PIECE_MOVE_TIME > 0.3){
+//			PIECE_MOVE_TIME -= 0.1;
+//		}
+//		else if(PIECE_MOVE_TIME > 0.15 ){
+//			PIECE_MOVE_TIME -= 0.05;
+//		}
+//		else if(PIECE_MOVE_TIME > 0.01){
+//			PIECE_MOVE_TIME -= 0.02;
+//		}
+//		else{
+//			System.out.println("You Win, Congrats");
+//		}
+		PIECE_MOVE_TIME /= 1.2;
+		if (PIECE_MOVE_TIME < MIN_MOVE_TIME){
+			PIECE_MOVE_TIME = MIN_MOVE_TIME;
 		}
-		else if(PIECE_MOVE_TIME > 0.15 ){
-			PIECE_MOVE_TIME -= 0.05;
-		}
-		else if(PIECE_MOVE_TIME > 0.01){
-			PIECE_MOVE_TIME -= 0.02;
-		}
-		else{
-			System.out.println("You Win, Congrats");
+		if (game.getLevel() >= MAX_LEVEL){
+			System.out.println("You Win, Congrats!");
 		}
 		
 		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);

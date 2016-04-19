@@ -18,6 +18,12 @@ public class Game {
 
 	private Shape piece; // the current piece that is dropping
 	
+	private int score;
+	
+	private int level;
+
+	private int linesCleared;
+	
 	private boolean isOver; // has the game finished?
 	
 	private boolean gameIsPaused;
@@ -41,6 +47,9 @@ public class Game {
 		grid = new Grid();
 		this.display = display;
 		
+		score = 0;
+		level = 0;
+		linesCleared = 0;
 		gameIsPaused = false;
 		savedState = false;
 		alreadySwitched = false;
@@ -62,6 +71,14 @@ public class Game {
 	public boolean getGameIsPaused(){
 		return gameIsPaused;
 	}
+	
+	public int getLevel(){
+		return this.display.getLevel();
+	}
+	
+	public int getScore(){
+		return this.display.getScore();
+	}
 	/**
 	 * Draws the current state of the game
 	 * 
@@ -73,6 +90,7 @@ public class Game {
 		if (piece != null) {
 			piece.draw(g);
 		}
+		this.display.draw();
 	}
 
 	/**
@@ -143,11 +161,25 @@ public class Game {
 //			Random rand = new Random();
 //			piece = new LShape(1, Grid.WIDTH / 2 - 1, grid, rand.nextInt(7));
 			getNewPiece();
+			//increase score
+			int lines = grid.getLinesCleared();
+			int curScore = this.display.getScore();
+			int curLevel = this.display.getLevel();
+			if (lines != linesCleared){
+				//if multiple lines were cleared at once, score them all
+				while (lines > linesCleared){ 
+					linesCleared ++;
+					incScore(linesCleared, curScore, curLevel);
+				}
+				linesCleared = lines;
+			}
 			int check = grid.checkRowsCleared();
-			
 			if(check == 1){
 				display.updateTimer();
+				//increase level
+				incLevel();
 			}
+			this.display.update();
 		}
 
 		// set Grid positions corresponding to frozen piece
@@ -161,6 +193,46 @@ public class Game {
 			piece = null;
 		}
 
+	}
+	/*increase score using original Nintendo Tetris Scoring System*/
+	public void incScore(int lines, int curScore, int curLevel){
+//		int lines = grid.getLinesCleared();
+//		int curScore = this.display.getScore();
+//		int curLevel = this.display.getLevel();
+		int newScore = 0;
+		switch (lines){
+		case 0:
+//			this.display.setScore(curScore);
+			newScore = curScore + 1;
+			return;
+		case 1:
+//			this.display.setScore(40*curLevel + curScore);
+			newScore = 40*(curLevel + 1) + curScore;
+			break;
+		case 2:
+//			this.display.setScore(100*curLevel + curScore);
+			newScore = 100*(curLevel + 1) + curScore;
+			break;
+		case 3:
+//			this.display.setScore(300*curLevel + curScore);
+			newScore = 300*(curLevel + 1) + curScore;
+			break;
+		case 4:
+//			this.display.setScore(1200*curLevel + curScore);
+			newScore = 1200*(curLevel + 1) + curScore;
+			break;
+		default:
+			System.out.println("Invalid number of lines cleared: " + lines);
+			return;
+		}
+		this.display.setScore(newScore);
+		System.out.println("Score = " + newScore);
+		
+	}
+	
+	/*increase level*/
+	public void incLevel(){
+		this.display.setLevel(this.display.getLevel()+1);
 	}
 
 			/** Rotate the piece*/
