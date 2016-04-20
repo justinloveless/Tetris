@@ -46,9 +46,10 @@ public class Game {
 	public Game(Tetris display) {
 		grid = new Grid();
 		this.display = display;
+		this.display.setLevel(1);
 		
 		score = 0;
-		level = 0;
+		level = 1;
 		linesCleared = 0;
 		gameIsPaused = false;
 		savedState = false;

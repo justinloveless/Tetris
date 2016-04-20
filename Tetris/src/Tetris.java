@@ -72,7 +72,6 @@ public class Tetris extends JPanel {
 		textField.setEditable(false);
 		textField.setBackground(SystemColor.activeCaptionBorder);
 		textField.setFont(new Font("Tahoma", Font.BOLD, 16));
-		textField.setText("0");
 		textField.setText(score+"");
 		textField.setBounds(20, 44, 70, 20);
 		panel_2.add(textField);
@@ -84,6 +83,7 @@ public class Tetris extends JPanel {
 		txtTetris.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
 		txtTetris.setText(" TETRIS");
 		txtTetris.setBounds(10, 11, 112, 37);
+		txtTetris.setEditable(false);
 		panel.add(txtTetris);
 		txtTetris.setColumns(10);
 		
@@ -96,9 +96,9 @@ public class Tetris extends JPanel {
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Tahoma", Font.BOLD, 16));
 		textField_1.setBackground(Color.LIGHT_GRAY);
-		textField_1.setText("1");
 		textField_1.setText(level+"");
 		textField_1.setBounds(29, 200, 74, 20);
+		textField_1.setEditable(false);
 		panel.add(textField_1);
 		textField_1.setColumns(10);
 		
