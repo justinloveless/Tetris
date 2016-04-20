@@ -110,7 +110,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 			game.isNotOver();
 		}
 			
-		if(e.getKeyCode() == KeyEvent.VK_M || e.getKeyCode() == KeyEvent.VK_P){
+		if(e.getKeyCode() == KeyEvent.VK_M){
 			if(this.music == true){
 				stopClip();
 				this.music = false;
@@ -143,6 +143,10 @@ public class EventController extends KeyAdapter implements ActionListener {
 				game.savePiece();
 				break;
 			case KeyEvent.VK_P:
+				if (this.music){
+					stopClip();
+					this.music = false;
+				}
 				game.gamePaused(true);
 				timer.stop();
 				setStateOfTime(false);
@@ -152,6 +156,10 @@ public class EventController extends KeyAdapter implements ActionListener {
 		else if (!gameOver  && !this.getStateOfTime()){
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_P:
+					if (!this.music){
+						startClip();
+						this.music = true;
+					}
 					timer.start();
 					setStateOfTime(true);
 					game.gamePaused(false);

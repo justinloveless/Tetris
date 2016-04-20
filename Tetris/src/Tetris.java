@@ -19,6 +19,13 @@ import javax.swing.UIManager;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
@@ -32,16 +39,21 @@ public class Tetris extends JPanel {
 	private Shape storedPiece;
 	private EventController ec;
 	private JTextField txtTetris;
-	private int score=0, level=0;
+	private int score=0, level=0, highScore;
 	private JTextField txtScore;
+	private JTextField txtHiScore;
 	private JTextField txtLevel;
 	private JPanel storedPanel;
+	private ObjectOutputStream saveOutputFile;
+	private ObjectInputStream saveInputFile;
+	private Preferences prefs;
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
 	 * @throws Exception 
 	 */
 	public Tetris() throws Exception{
-
+		prefs = new Preferences();
+		readPrefs();
 		storageGrid = new Grid(4,3);
 		storedPiece = null;
 		game = new Game(this);
@@ -65,13 +77,13 @@ public class Tetris extends JPanel {
 		/*create score panel*/
 		JPanel scorePanel = new JPanel();
 		scorePanel.setBackground(Color.LIGHT_GRAY);
-		scorePanel.setBounds(10, 79, 112, 84);
+		scorePanel.setBounds(10, 60, 112, 110);
 		rightPanel.add(scorePanel);
 		scorePanel.setLayout(null);
 		
 		/*create score label*/
 		JLabel lblScore = new JLabel("SCORE:");
-		lblScore.setBounds(10, 11, 92, 14);
+		lblScore.setBounds(10, 10, 92, 14);
 		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblScore.setFont(new Font("Tahoma", Font.BOLD, 13));
 		scorePanel.add(lblScore);
@@ -83,9 +95,27 @@ public class Tetris extends JPanel {
 		txtScore.setFont(new Font("Tahoma", Font.BOLD, 16));
 		txtScore.setHorizontalAlignment(SwingConstants.CENTER);
 		txtScore.setText(score+"");
-		txtScore.setBounds(20, 44, 70, 20);
+		txtScore.setBounds(20, 30, 70, 20);
 		scorePanel.add(txtScore);
 		txtScore.setColumns(10);
+		
+		/*create hi-score label*/
+		JLabel lblHiScore = new JLabel("HI-SCORE:");
+		lblHiScore.setBounds(10, 60, 92, 14);
+		lblHiScore.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHiScore.setFont(new Font("Tahoma", Font.BOLD, 13));
+		scorePanel.add(lblHiScore);
+		
+		/*set up hi-score text field*/
+		txtHiScore = new JTextField();
+		txtHiScore.setEditable(false);
+		txtHiScore.setBackground(SystemColor.activeCaptionBorder);
+		txtHiScore.setFont(new Font("Tahoma", Font.BOLD, 16));
+		txtHiScore.setHorizontalAlignment(SwingConstants.CENTER);
+		txtHiScore.setText(highScore+"");
+		txtHiScore.setBounds(20, 80, 70, 20);
+		scorePanel.add(txtHiScore);
+		txtHiScore.setColumns(10);
 		
 		/*set up Title text field*/
 		txtTetris = new JTextField();
@@ -159,11 +189,22 @@ public class Tetris extends JPanel {
 			g.setColor(Color.BLACK);
 			g.drawString("GAME OVER", 107, 200);
 			ec.resetTimerEc();
+			System.out.println("Score=" + score + " hiScore=" + highScore);
+			if (score > highScore){
+				prefs.setHS(score);
+				savePrefs();
+			}
 		}
 		else if(game.getGameIsPaused()){
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
 			g.drawString("PAUSED", 140, 200);
+			System.out.println("HighScore = " + highScore + " score = " + score);
+			if (score > highScore){
+				prefs.setHS(score);
+				System.out.println("HS(before save) = " + prefs.getHS());
+				savePrefs();
+			}
 		}
 	}
 
@@ -193,10 +234,61 @@ public class Tetris extends JPanel {
 	public void setStoredPiece(Shape p){
 		storedPiece = p;
 	}
+	private void readPrefs(){
+		try {
+			File f = new File("tetrisSave.txt");
+			if (!f.exists()){
+				f.createNewFile();
+				prefs = new Preferences();
+			} else if (f.length() > 10){
+				ObjectInputStream ois = new ObjectInputStream(
+						new FileInputStream(f));
+				prefs = new Preferences(ois);
+				highScore = prefs.getHS();
+				ois.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			prefs = new Preferences();
+		} catch (IOException e) {
+			e.printStackTrace();
+			prefs = new Preferences();
+		}
+	}
+	private void savePrefs(){
+		ObjectOutputStream oos;
+		try {
+			File f = new File("tetrisSave.txt");
+			if (!f.exists()){
+				System.out.println("File didn't exist!");
+				f.createNewFile();
+			} else if (prefs != null){
+				System.out.println("about to save");
+				oos = new ObjectOutputStream(
+						new FileOutputStream(f, false));
+				prefs.savePrefs(oos);
+				oos.flush();
+				oos.close();
+				readPrefs();
+				return;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Didn't save");
+	}
 	public void draw(){
 		if (txtLevel != null && txtScore != null){
 			txtLevel.setText(level + "");
 			txtScore.setText(score + "");
+			if (score > highScore){
+				highScore = score;
+				txtHiScore.setText(highScore + "");
+			}
 		}
 	}
 	public void updateStorage(){
