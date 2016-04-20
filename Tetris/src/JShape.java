@@ -199,4 +199,14 @@ public class JShape extends Shape{
 		
 		
 	}
+	
+
+	public String toString(){
+		return "J-Shape";
+	}
+	
+
+	public int getPieceNum(){
+		return 4;
+	}
 }

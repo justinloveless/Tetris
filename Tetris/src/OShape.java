@@ -136,4 +136,13 @@ public class OShape extends Shape{
 	{
 		
 	}
+	
+
+	public String toString(){
+		return "O-Shape";
+	}
+
+	public int getPieceNum(){
+		return 1;
+	}
 }

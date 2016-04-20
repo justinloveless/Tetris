@@ -200,4 +200,13 @@ public class SShape extends Shape{
 		
 		
 	}
+	
+
+	public String toString(){
+		return "S-Shape";
+	}
+
+	public int getPieceNum(){
+		return 2;
+	}
 }

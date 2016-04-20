@@ -3,6 +3,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JPanel;
+
 /**
  * This is the Tetris board represented by a (HEIGHT - by - WIDTH) matrix of
  * Squares.
@@ -50,6 +52,18 @@ public class Grid {
 			}
 		}
 
+	}
+	
+	/*Creates the grid with custom height and width*/
+	public Grid(int height, int width){
+		board = new Square[height][width];
+		// put squares in the board
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				board[row][col] = new Square(this, row, col, EMPTY, false);
+
+			}
+		}
 	}
 
 	/**
@@ -173,6 +187,37 @@ public class Grid {
 			for (int c = 0; c < WIDTH; c++) {
 				if (!board[r][c].getColor().equals(EMPTY)) {
 					board[r][c].draw(g);
+				}
+			}
+		}
+	}
+	
+	/*draws the grid on the given graphics context, with custom height and width*/
+	public void draw(Graphics g, int height, int width) {
+		int left = 100;
+		int top = 50;
+		int border = 5;
+		// draw the edges as rectangles: left, right in blue then bottom in red
+		g.setColor(Color.BLACK);
+		g.fillRect(left - border, top, border, height * Square.HEIGHT);
+		g.fillRect(left + width * Square.WIDTH, top, border, height
+				* Square.HEIGHT);
+		g.fillRect(left - border, top + height * Square.HEIGHT, width
+				* Square.WIDTH + 2 * border, border);
+
+		// draw all the squares in the grid
+		// empty ones first (to avoid masking the black lines of the pieces that have already fallen)
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				if (board[r][c].getColor().equals(EMPTY)) {
+					board[r][c].draw(g, left, top);
+				}
+			}
+		}
+		for (int r = 0; r < height; r++) {
+			for (int c = 0; c < width; c++) {
+				if (!board[r][c].getColor().equals(EMPTY)) {
+					board[r][c].draw(g, left, top);
 				}
 			}
 		}

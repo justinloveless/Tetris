@@ -178,4 +178,20 @@ public class Square {
 			g.drawRect(actualX, actualY, WIDTH, HEIGHT);
 		}
 	}
+	
+	/*draw this square with custom LEFT and TOP values*/
+	public void draw(Graphics g, int left, int top) {
+
+		// calculate the upper left (x,y) coordinate of this square
+		int actualX = left + col * WIDTH;
+		int actualY = top + row * HEIGHT;
+		g.setColor(color);
+		g.fillRect(actualX, actualY, WIDTH, HEIGHT);
+		// black border (if not empty)
+		if (!color.equals(Grid.EMPTY)) {
+			g.setColor(Color.BLACK);
+			g.drawRect(actualX, actualY, WIDTH, HEIGHT);
+		}
+	}
+	
 }

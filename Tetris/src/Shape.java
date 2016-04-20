@@ -42,6 +42,13 @@ public abstract class Shape {
 		}
 	}
 	
+	/*draw the piece on the given Graphics context, with custom left and top values*/
+	public void mdraw(Graphics g) {
+		for (int i = 0; i < PIECE_COUNT; i++) {
+			square[i].draw(g);
+		}
+	}
+	
 	/**
 	 * Moves the piece if possible Freeze the piece if it cannot move down
 	 * anymore
@@ -106,4 +113,10 @@ public abstract class Shape {
 	{
 		
 	}
+	
+	public String toString(){
+		return "undefined";
+	}
+	
+	public abstract int getPieceNum();
 }

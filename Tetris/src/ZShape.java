@@ -195,4 +195,13 @@ public class ZShape extends Shape{
 		
 		
 	}
+	
+
+	public String toString(){
+		return "Z-Shape";
+	}
+
+	public int getPieceNum(){
+		return 3;
+	}
 }

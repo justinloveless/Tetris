@@ -166,4 +166,12 @@ public class IShape extends Shape{
 		
 		
 	}
+
+	public String toString(){
+		return "I-Shape";
+	}
+
+	public int getPieceNum(){
+		return 6;
+	}
 }

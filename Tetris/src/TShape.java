@@ -200,4 +200,13 @@ public class TShape extends Shape{
 		
 		
 	}
+	
+
+	public String toString(){
+		return "T-Shape";
+	}
+
+	public int getPieceNum(){
+		return 5;
+	}
 }

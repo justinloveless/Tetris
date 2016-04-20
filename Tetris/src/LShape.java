@@ -197,4 +197,13 @@ public class LShape extends Shape{
 		
 		
 	}
+	
+
+	public String toString(){
+		return "L-Shape";
+	}
+	
+	public int getPieceNum(){
+		return 0;
+	}
 }

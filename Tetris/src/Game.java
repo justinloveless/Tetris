@@ -13,10 +13,14 @@ import java.util.Random;
 public class Game {
 
 	private Grid grid; // the grid that makes up the Tetris board
+	
+	private Grid storageGrid; // the grid that displays the saved piece
 
 	private Tetris display; // the visual for the Tetris game
 
 	private Shape piece; // the current piece that is dropping
+	
+	private Shape storedPiece; // the piece that is stored
 	
 	private int score;
 	
@@ -45,6 +49,7 @@ public class Game {
 	 */
 	public Game(Tetris display) {
 		grid = new Grid();
+		storageGrid = new Grid(4,3);
 		this.display = display;
 		this.display.setLevel(1);
 		
@@ -87,9 +92,14 @@ public class Game {
 	 *            the Graphics context on which to draw
 	 */
 	public void draw(Graphics g) {
+		int left = 10, top = 70;
 		grid.draw(g);
+		storageGrid.draw(g,4,3);
 		if (piece != null) {
 			piece.draw(g);
+		}
+		if (storedPiece != null){
+			storedPiece.draw(g); // TODO does this need to use the modified draw function?
 		}
 		this.display.draw();
 	}
@@ -123,11 +133,15 @@ public class Game {
 	
 	public void removeAll(){
 		grid.removeAll();
+//		storageGrid.removeAll();
+		storedPiece = null;
 		display.update();
 	}
 	
 	public void isNotOver(){
 		isOver = false;
+		this.display.setLevel(1);
+		this.display.setScore(0);
 	}
 
 	/**
@@ -139,7 +153,7 @@ public class Game {
 		if (piece == null) {
 			return false;
 		}
-
+		
 		// check if game is already over
 		if (isOver) {
 			return true;
@@ -197,29 +211,21 @@ public class Game {
 	}
 	/*increase score using original Nintendo Tetris Scoring System*/
 	public void incScore(int lines, int curScore, int curLevel){
-//		int lines = grid.getLinesCleared();
-//		int curScore = this.display.getScore();
-//		int curLevel = this.display.getLevel();
 		int newScore = 0;
 		switch (lines){
 		case 0:
-//			this.display.setScore(curScore);
 			newScore = curScore + 1;
 			return;
 		case 1:
-//			this.display.setScore(40*curLevel + curScore);
 			newScore = 40*(curLevel + 1) + curScore;
 			break;
 		case 2:
-//			this.display.setScore(100*curLevel + curScore);
 			newScore = 100*(curLevel + 1) + curScore;
 			break;
 		case 3:
-//			this.display.setScore(300*curLevel + curScore);
 			newScore = 300*(curLevel + 1) + curScore;
 			break;
 		case 4:
-//			this.display.setScore(1200*curLevel + curScore);
 			newScore = 1200*(curLevel + 1) + curScore;
 			break;
 		default:
@@ -227,7 +233,6 @@ public class Game {
 			return;
 		}
 		this.display.setScore(newScore);
-		System.out.println("Score = " + newScore);
 		
 	}
 	
@@ -250,50 +255,32 @@ public class Game {
         
     	public void savePiece(){
     		if(!savedState){
+    			previousPieceNum = piece.getPieceNum();
     			piece = null;
+    			storedPiece = null;
+//    			getNewPiece();
+    			getSavedPiece();
     			previousPieceNum = savedPieceNum;
-    			getNewPiece();
     			savedState = true;
+//    			System.out.println("Stored Piece: " + storedPiece.toString());
     		}
     		else if (!alreadySwitched || newPieceState){
-    			
+    			storedPiece = null;
     			piece = null;
     			getSavedPiece();
     			int temp = previousPieceNum;
     			previousPieceNum = savedPieceNum;
     			savedPieceNum = temp;
+    			System.out.println("Stored Piece: " + storedPiece.toString());
     		}
  
     	}
         
         public void getSavedPiece(){
-        	
         	alreadySwitched = true;
         	newPieceState = false;
-        	
-        	switch (previousPieceNum){
-        	case 0: // L Shape
-        		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 1: // O Shape
-        		piece = new OShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 2: // S Shape
-        		piece = new SShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 3: // Z Shape
-        		piece = new ZShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 4: // J Shape
-        		piece = new JShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 5: // T Shape
-        		piece = new TShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 6: // I Shape
-        		piece = new IShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	}
+        	piece = getPiece(previousPieceNum, 1, Grid.WIDTH/2-1, grid);
+        	storedPiece = getPiece(savedPieceNum, 1,1, storageGrid);
         }
         
         /** get new piece **/
@@ -303,31 +290,38 @@ public class Game {
         	
         	Random rand = new Random();
         	savedPieceNum = rand.nextInt(7);
-        	switch (savedPieceNum){
-        	case 0: // L Shape
-        		piece = new LShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 1: // O Shape
-        		piece = new OShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 2: // S Shape
-        		piece = new SShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 3: // Z Shape
-        		piece = new ZShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 4: // J Shape
-        		piece = new JShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 5: // T Shape
-        		piece = new TShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	case 6: // I Shape
-        		piece = new IShape(1, Grid.WIDTH / 2 - 1, grid);
-        		break;
-        	}
+        	piece = getPiece(savedPieceNum, 1, Grid.WIDTH/2 -1, grid);
+//        	storedPiece = getPiece(previousPieceNum, 1,1, storageGrid);
+        	//TODO put into new piece buffer, display next piece
         	
         }
-
+        
+        public Shape getPiece(int pieceNum, int row, int col, Grid g){
+        	Shape p = null;
+        	switch (pieceNum){
+        	case 0: // L Shape
+        		p = new LShape(row, col, g);
+        		break;
+        	case 1: // O Shape
+        		p = new OShape(row, col, g);
+        		break;
+        	case 2: // S Shape
+        		p = new SShape(row, col, g);
+        		break;
+        	case 3: // Z Shape
+        		p = new ZShape(row, col, g);
+        		break;
+        	case 4: // J Shape
+        		p = new JShape(row, col, g);
+        		break;
+        	case 5: // T Shape
+        		p = new TShape(row, col, g);
+        		break;
+        	case 6: // I Shape
+        		p = new IShape(row, col, g);
+        		break;
+        	}
+        	return p;
+        }
 
 }

@@ -28,55 +28,66 @@ public class Tetris extends JPanel {
 	 */
 
 	private Game game;
+	private Grid storageGrid;
+	private Shape storedPiece;
 	private EventController ec;
 	private JTextField txtTetris;
 	private int score=0, level=0;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtScore;
+	private JTextField txtLevel;
+	private JPanel storedPanel;
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
 	 * @throws Exception 
 	 */
 	public Tetris() throws Exception{
+
+		storageGrid = new Grid(4,3);
+		storedPiece = null;
 		game = new Game(this);
+		ec = new EventController(game);
 		JFrame f = new JFrame("Tetris Game");
 		f.add(this);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(550, 550);
 		f.setVisible(true);
-		ec = new EventController(game);
 		f.addKeyListener(ec);
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setBounds(367, 11, 132, 441);
-		add(panel);
-		panel.setLayout(null);
+		/*create right panel*/
+		JPanel rightPanel = new JPanel();
+		rightPanel.setBackground(Color.GRAY);
+		rightPanel.setBounds(310, 50, 132, 405);
+		add(rightPanel);
+		rightPanel.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.GRAY);
-		panel_2.setBounds(10, 79, 112, 84);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
+		/*create score panel*/
+		JPanel scorePanel = new JPanel();
+		scorePanel.setBackground(Color.LIGHT_GRAY);
+		scorePanel.setBounds(10, 79, 112, 84);
+		rightPanel.add(scorePanel);
+		scorePanel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("SCORE:");
-		lblNewLabel.setBounds(10, 11, 92, 14);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		panel_2.add(lblNewLabel);
+		/*create score label*/
+		JLabel lblScore = new JLabel("SCORE:");
+		lblScore.setBounds(10, 11, 92, 14);
+		lblScore.setHorizontalAlignment(SwingConstants.CENTER);
+		lblScore.setFont(new Font("Tahoma", Font.BOLD, 13));
+		scorePanel.add(lblScore);
 		
+		/*set up score text field*/
+		txtScore = new JTextField();
+		txtScore.setEditable(false);
+		txtScore.setBackground(SystemColor.activeCaptionBorder);
+		txtScore.setFont(new Font("Tahoma", Font.BOLD, 16));
+		txtScore.setHorizontalAlignment(SwingConstants.CENTER);
+		txtScore.setText(score+"");
+		txtScore.setBounds(20, 44, 70, 20);
+		scorePanel.add(txtScore);
+		txtScore.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setBackground(SystemColor.activeCaptionBorder);
-		textField.setFont(new Font("Tahoma", Font.BOLD, 16));
-		textField.setText(score+"");
-		textField.setBounds(20, 44, 70, 20);
-		panel_2.add(textField);
-		textField.setColumns(10);
-		
+		/*set up Title text field*/
 		txtTetris = new JTextField();
 		txtTetris.setBackground(Color.GRAY);
 		txtTetris.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,23 +95,50 @@ public class Tetris extends JPanel {
 		txtTetris.setText(" TETRIS");
 		txtTetris.setBounds(10, 11, 112, 37);
 		txtTetris.setEditable(false);
-		panel.add(txtTetris);
+		rightPanel.add(txtTetris);
 		txtTetris.setColumns(10);
 		
+		/*create level label*/
 		JLabel lblLevel = new JLabel("LEVEL:");
 		lblLevel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLevel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblLevel.setBounds(46, 174, 46, 14);
-		panel.add(lblLevel);
+		rightPanel.add(lblLevel);
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		textField_1.setBackground(Color.LIGHT_GRAY);
-		textField_1.setText(level+"");
-		textField_1.setBounds(29, 200, 74, 20);
-		textField_1.setEditable(false);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		/*set up level text field*/
+		txtLevel = new JTextField();
+		txtLevel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		txtLevel.setHorizontalAlignment(SwingConstants.CENTER);
+		txtLevel.setBackground(Color.LIGHT_GRAY);
+		txtLevel.setText(level+"");
+		txtLevel.setBounds(29, 200, 74, 20);
+		txtLevel.setEditable(false);
+		rightPanel.add(txtLevel);
+		txtLevel.setColumns(10);
+		
+		/*create left panel*/
+		JPanel leftPanel = new JPanel();
+		leftPanel.setBackground(Color.GRAY);
+		leftPanel.setBounds(10,50,80,405);
+		leftPanel.setLayout(null);
+		add(leftPanel);
+		
+		/*create stored piece label*/
+		JLabel lblStored = new JLabel("Stored:");
+		lblStored.setHorizontalAlignment(SwingConstants.CENTER);
+		lblStored.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblStored.setBounds(10,5,60,15);
+		leftPanel.add(lblStored);
+
+		/*create stored piece panel*/
+		storedPanel = new JPanel();
+		storedPanel.setBackground(Color.LIGHT_GRAY);
+		storedPanel.setBounds(10, 20, 60, 120); 	
+		storedPanel.setLayout(null);
+		leftPanel.add(storedPanel);
+		
+
+		
 		
 	}
 	/**
@@ -149,10 +187,20 @@ public class Tetris extends JPanel {
 	public int getScore(){
 		return score;
 	}
+	public JPanel getStoredPanel(){
+		return storedPanel;
+	}
+	public void setStoredPiece(Shape p){
+		storedPiece = p;
+	}
 	public void draw(){
-		if (textField_1 != null && textField != null){
-			textField_1.setText(level + "");
-			textField.setText(score + "");
+		if (txtLevel != null && txtScore != null){
+			txtLevel.setText(level + "");
+			txtScore.setText(score + "");
 		}
+	}
+	public void updateStorage(){
+		Graphics g = this.getGraphics();
+		
 	}
 }
