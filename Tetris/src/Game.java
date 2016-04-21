@@ -123,6 +123,8 @@ public class Game {
 				updatePiece();
 		        grid.checkRows();
 		        display.update();
+		        //add 2 points per dropped cell
+		        this.display.setScore(this.display.getScore() + 2);
 			}
 		}
 		else if (piece != null) {
@@ -326,6 +328,10 @@ public class Game {
         		break;
         	}
         	return p;
+        }
+        
+        public Tetris getDisp(){
+        	return this.display;
         }
 
 }

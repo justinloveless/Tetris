@@ -44,6 +44,7 @@ public class Tetris extends JPanel {
 	private JTextField txtScore;
 	private JTextField txtHiScore;
 	private JTextField txtLevel;
+	private JTextArea txtInstruction;
 	private JPanel storedPanel;
 	private ObjectOutputStream saveOutputFile;
 	private ObjectInputStream saveInputFile;
@@ -145,8 +146,27 @@ public class Tetris extends JPanel {
 		txtLevel.setText(level+"");
 		txtLevel.setBounds(29, 200, 74, 20);
 		txtLevel.setEditable(false);
-		rightPanel.add(txtLevel);
 		txtLevel.setColumns(10);
+		rightPanel.add(txtLevel);
+		
+		/*create instruction panel*/
+		JPanel instructionPanel = new JPanel();
+		instructionPanel.setBackground(Color.LIGHT_GRAY);
+		instructionPanel.setBounds(10, 235, 112, 165);
+		instructionPanel.setLayout(null);
+		rightPanel.add(instructionPanel);
+		
+		/*create instruction text field*/
+		txtInstruction = new JTextArea();
+		txtInstruction.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		txtInstruction.setBackground(Color.LIGHT_GRAY);
+		txtInstruction.setText(prefs.toString()+"");
+		txtInstruction.setBounds(5, 5, 108, 161);
+		txtInstruction.setEditable(false);
+		txtInstruction.setColumns(10);
+		txtInstruction.setLineWrap(true);
+		txtInstruction.setWrapStyleWord(true);
+		instructionPanel.add(txtInstruction);
 		
 		/*create left panel*/
 		JPanel leftPanel = new JPanel();
@@ -205,7 +225,7 @@ public class Tetris extends JPanel {
 			if (score > prefs.highScore){
 				prefs.highScore = score;
 				System.out.println("HS(before save) = " + prefs.highScore);
-				savePrefs();
+				prefs.savePrefs();
 			}
 		}
 	}
@@ -236,64 +256,64 @@ public class Tetris extends JPanel {
 	public void setStoredPiece(Shape p){
 		storedPiece = p;
 	}
-	private void readPrefs(){
-		File save = new File("tetrisSave.txt");
-		try {
-			ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(save));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	private void savePrefs(){
-		ObjectOutputStream oos;
-		try {
-			File f = new File("tetrisSave.txt");
-			if (!f.exists()){
-				System.out.println("File didn't exist!");
-				f.createNewFile();
-				oos = new ObjectOutputStream(
-						new FileOutputStream(f, false));
+//	private void readPrefs(){
+//		File save = new File("tetrisSave.txt");
+//		try {
+//			ObjectInputStream ois = new ObjectInputStream(
+//					new FileInputStream(save));
+//			
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	private void savePrefs(){
+//		ObjectOutputStream oos;
+//		try {
+//			File f = new File("tetrisSave.txt");
+//			if (!f.exists()){
+//				System.out.println("File didn't exist!");
+//				f.createNewFile();
+//				oos = new ObjectOutputStream(
+//						new FileOutputStream(f, false));
+////				prefs = new Preferences();
+//				oos.writeObject(prefs);
+//				oos.flush();
+//				oos.close();
+//				readPrefs();
+//				return;
+//			} else if (prefs != null){
+//				System.out.println("about to save");
+//				oos = new ObjectOutputStream(
+//						new FileOutputStream(f, false));
+////				prefs.savePrefs(oos);
+//				oos.writeObject(prefs);
+//				oos.flush();
+//				oos.close();
+//				System.out.println("HiScore->" + prefs.highScore);
+//				readPrefs();
+//				return;
+//			} else {
+//				System.out.println("prefs was null");
+//				oos = new ObjectOutputStream(
+//						new FileOutputStream(f, false));
 //				prefs = new Preferences();
-				oos.writeObject(prefs);
-				oos.flush();
-				oos.close();
-				readPrefs();
-				return;
-			} else if (prefs != null){
-				System.out.println("about to save");
-				oos = new ObjectOutputStream(
-						new FileOutputStream(f, false));
-//				prefs.savePrefs(oos);
-				oos.writeObject(prefs);
-				oos.flush();
-				oos.close();
-				System.out.println("HiScore->" + prefs.highScore);
-				readPrefs();
-				return;
-			} else {
-				System.out.println("prefs was null");
-				oos = new ObjectOutputStream(
-						new FileOutputStream(f, false));
-				prefs = new Preferences();
-				oos.writeObject(prefs);
-				oos.flush();
-				oos.close();
-				readPrefs();
-				return;
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Didn't save");
-	}
+//				oos.writeObject(prefs);
+//				oos.flush();
+//				oos.close();
+//				readPrefs();
+//				return;
+//			}
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		System.out.println("Didn't save");
+//	}
 	
 	public Preferences getPrefs(){
 		return prefs;

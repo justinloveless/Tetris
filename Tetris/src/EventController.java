@@ -108,14 +108,16 @@ public class EventController extends KeyAdapter implements ActionListener {
 	 */
 	public void keyPressed(KeyEvent e) {
 		// if 'Q', quit the game
-		if (e.getKeyCode() == KeyEvent.VK_Q) {
+//		if (e.getKeyCode() == KeyEvent.VK_Q) {
+		if (e.getKeyCode() == game.getDisp().getPrefs().quit) {
 			timer.stop();
 			game.save();
 			((JFrame) e.getSource()).dispose();
 			System.exit(0);
 		}
 		
-		if (gameOver && e.getKeyCode() == KeyEvent.VK_ENTER) {
+//		if (gameOver && e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (gameOver && e.getKeyCode() == game.getDisp().getPrefs().newGame) {
 			game.removeAll();
 			timer.start();
 			gameOver = false;
@@ -125,7 +127,8 @@ public class EventController extends KeyAdapter implements ActionListener {
 			}
 		}
 			
-		if(e.getKeyCode() == KeyEvent.VK_M){
+//		if(e.getKeyCode() == KeyEvent.VK_M){
+		if(e.getKeyCode() == game.getDisp().getPrefs().mute){
 			if(this.music == true){
 				stopClip(clip);
 				this.music = false;
@@ -138,26 +141,20 @@ public class EventController extends KeyAdapter implements ActionListener {
 		
 	
 		if (!gameOver  && this.getStateOfTime()) {
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_UP:
+			if (e.getKeyCode() == game.getDisp().getPrefs().dropHard){
 				handleMove(Direction.UP);
-				break;
-			case KeyEvent.VK_DOWN:
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().dropSoft){
 				handleMove(Direction.DOWN);
-				break;
-            case KeyEvent.VK_LEFT:
-                handleMove(Direction.LEFT);
-				break;
-            case KeyEvent.VK_RIGHT:
-                handleMove(Direction.RIGHT);
-				break;
-			case KeyEvent.VK_SPACE:
+				game.getDisp().setScore(game.getDisp().getScore() + 1);
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().moveLeft){
+				handleMove(Direction.LEFT);
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().moveRight){
+				handleMove(Direction.RIGHT);
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().rotate){
 				game.rotatePiece();
-				break;
-			case KeyEvent.VK_S:
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().savePiece){
 				game.savePiece();
-				break;
-			case KeyEvent.VK_P:
+			} else if (e.getKeyCode() == game.getDisp().getPrefs().pause){
 				if (this.music){
 					stopClip(clip);
 					this.music = false;
@@ -165,8 +162,37 @@ public class EventController extends KeyAdapter implements ActionListener {
 				game.gamePaused(true);
 				timer.stop();
 				setStateOfTime(false);
-				break;
-			}
+			} 
+//			switch (e.getKeyCode()) {
+//			case KeyEvent.VK_UP:
+//				handleMove(Direction.UP);
+//				break;
+//			case KeyEvent.VK_DOWN:
+//				handleMove(Direction.DOWN);
+//				break;
+//            case KeyEvent.VK_LEFT:
+//                handleMove(Direction.LEFT);
+//				break;
+//            case KeyEvent.VK_RIGHT:
+//                handleMove(Direction.RIGHT);
+//				break;
+//			case KeyEvent.VK_SPACE:
+//				game.rotatePiece();
+//				break;
+//			case KeyEvent.VK_S:
+//				game.savePiece();
+//				break;
+//			case KeyEvent.VK_P:
+//				if (this.music){
+//					stopClip(clip);
+//					this.music = false;
+//				}
+//				game.gamePaused(true);
+//				timer.stop();
+//				setStateOfTime(false);
+//				break;
+//			}
+			
 		}
 		else if (!gameOver  && !this.getStateOfTime()){
 				switch (e.getKeyCode()) {

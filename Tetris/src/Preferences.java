@@ -37,23 +37,23 @@ public class Preferences implements Serializable{
 		quit = KeyEvent.VK_Q;
 		txtQuit = KeyEvent.getKeyText(quit) + " - Quit Game";
 		pause=(KeyEvent.VK_P);
-		txtPause = KeyEvent.getKeyText(pause) + " - Pause/Start game";
+		txtPause = KeyEvent.getKeyText(pause) + " - Pause";
 		mute=(KeyEvent.VK_M);
-		txtMute = KeyEvent.getKeyText(mute) + " - Music ON/OFF";		
+		txtMute = KeyEvent.getKeyText(mute) + " - Mute";		
 		newGame=(KeyEvent.VK_ENTER);
-		txtNewGame = KeyEvent.getKeyText(newGame) + " - New Game (on GameOver)";	
+		txtNewGame = KeyEvent.getKeyText(newGame) + " - New Game";	
 		rotate=(KeyEvent.VK_SPACE);
-		txtRotate = KeyEvent.getKeyText(rotate) + " - Rotate piece";	
+		txtRotate = KeyEvent.getKeyText(rotate) + " - Rotate";	
 		savePiece=(KeyEvent.VK_S);
-		txtSavePiece = KeyEvent.getKeyText(savePiece) + " - Swap piece";
+		txtSavePiece = KeyEvent.getKeyText(savePiece) + " - Swap";
 		moveLeft=(KeyEvent.VK_LEFT);
-		txtMoveLeft = KeyEvent.getKeyText(moveLeft) + " - Move piece left";
+		txtMoveLeft = KeyEvent.getKeyText(moveLeft) + " - Move left";
 		moveRight=(KeyEvent.VK_RIGHT);
-		txtMoveRight= KeyEvent.getKeyText(moveRight) + " - Move piece right";
+		txtMoveRight= KeyEvent.getKeyText(moveRight) + " - Move right";
 		dropSoft=(KeyEvent.VK_DOWN);
-		txtDropSoft = KeyEvent.getKeyText(dropSoft) + " - Move piece down";
+		txtDropSoft = KeyEvent.getKeyText(dropSoft) + " - Soft Drop";
 		dropHard=(KeyEvent.VK_UP);
-		txtDropHard = KeyEvent.getKeyText(dropHard) + "  - Drop piece";
+		txtDropHard = KeyEvent.getKeyText(dropHard) + "  - Hard Drop";
 	}
 	//read from file
 	Preferences(ObjectInputStream ois){
