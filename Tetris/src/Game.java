@@ -15,12 +15,16 @@ public class Game {
 	private Grid grid; // the grid that makes up the Tetris board
 	
 	private Grid storageGrid; // the grid that displays the saved piece
+	
+	private Grid nextPieceGrid; // the grid that displays the next piece
 
 	private Tetris display; // the visual for the Tetris game
 
 	private Shape piece; // the current piece that is dropping
 	
 	private Shape storedPiece; // the piece that is stored
+	
+	private Shape nextPiece; // the next piece
 	
 	private int score;
 	
@@ -36,6 +40,8 @@ public class Game {
 	
 	private int previousPieceNum;
 	
+	private int nextPieceNum;
+	
 	private boolean savedState;
 	
 	private boolean alreadySwitched;
@@ -50,6 +56,7 @@ public class Game {
 	public Game(Tetris display) {
 		grid = new Grid();
 		storageGrid = new Grid(4,3);
+		nextPieceGrid = new Grid(4,3);
 		this.display = display;
 		this.display.setLevel(1);
 		
@@ -59,7 +66,9 @@ public class Game {
 		gameIsPaused = false;
 		savedState = false;
 		alreadySwitched = false;
-		
+		Random rand = new Random();
+		nextPieceNum = rand.nextInt(7);
+    	nextPiece = getPiece(nextPieceNum, 1, 1, nextPieceGrid);
 		getNewPiece();
 		isOver = false;
 	}
@@ -96,14 +105,18 @@ public class Game {
 	 *            the Graphics context on which to draw
 	 */
 	public void draw(Graphics g) {
-		int left = 10, top = 70;
+		int left = 20, top = 80, topOffset = 160;
 		grid.draw(g);
-		storageGrid.draw(g,4,3);
 		if (piece != null) {
 			piece.draw(g);
 		}
+		storageGrid.draw(g, left, top, 4,3);
 		if (storedPiece != null){
-			storedPiece.draw(g); // TODO does this need to use the modified draw function?
+			storedPiece.drawAside(g, left, top); // TODO does this need to use the modified draw function?
+		}
+		nextPieceGrid.draw(g,  left, top + topOffset, 4, 3);
+		if (nextPiece != null){
+			nextPiece.drawAside(g, left, top + topOffset);
 		}
 		this.display.draw();
 	}
@@ -141,6 +154,7 @@ public class Game {
 		grid.removeAll();
 //		storageGrid.removeAll();
 		storedPiece = null;
+		nextPiece = null;
 		display.update();
 	}
 	
@@ -260,46 +274,35 @@ public class Game {
         
         
     	public void savePiece(){
-    		if(!savedState){
+    		if(!savedState){ // first time saving piece
     			previousPieceNum = piece.getPieceNum();
     			piece = null;
-    			storedPiece = null;
-//    			getNewPiece();
-    			getSavedPiece();
-    			previousPieceNum = savedPieceNum;
+    			storedPiece = getPiece(previousPieceNum, 1, 1, storageGrid);
+    			getNewPiece();
     			savedState = true;
-//    			System.out.println("Stored Piece: " + storedPiece.toString());
+            	alreadySwitched = true;
+            	newPieceState = false;
     		}
-    		else if (!alreadySwitched || newPieceState){
-    			storedPiece = null;
-    			piece = null;
-    			getSavedPiece();
-    			int temp = previousPieceNum;
-    			previousPieceNum = savedPieceNum;
-    			savedPieceNum = temp;
-    			System.out.println("Stored Piece: " + storedPiece.toString());
+    		else if (!alreadySwitched || newPieceState){//only allow one switch per new piece
+    			previousPieceNum = piece.getPieceNum();
+    			savedPieceNum = storedPiece.getPieceNum();
+    			storedPiece = getPiece(previousPieceNum, 1, 1, storageGrid);
+    			piece = getPiece(savedPieceNum, 1, Grid.WIDTH/2 -1, grid);
+            	alreadySwitched = true;
+            	newPieceState = false;
     		}
  
     	}
         
-        public void getSavedPiece(){
-        	alreadySwitched = true;
-        	newPieceState = false;
-        	piece = getPiece(previousPieceNum, 1, Grid.WIDTH/2-1, grid);
-        	storedPiece = getPiece(savedPieceNum, 1,1, storageGrid);
-        }
         
         /** get new piece **/
         public void getNewPiece(){
-        	
         	newPieceState = true;
-        	
         	Random rand = new Random();
-        	savedPieceNum = rand.nextInt(7);
-        	piece = getPiece(savedPieceNum, 1, Grid.WIDTH/2 -1, grid);
-//        	storedPiece = getPiece(previousPieceNum, 1,1, storageGrid);
-        	//TODO put into new piece buffer, display next piece
-        	
+        	//swap nextPiece into current piece
+        	piece = getPiece(nextPiece.getPieceNum(), 1, Grid.WIDTH/2 - 1, grid);
+        	//get a new nextPiece
+        	nextPiece = getPiece(rand.nextInt(7), 1, 1, nextPieceGrid);
         }
         
         public Shape getPiece(int pieceNum, int row, int col, Grid g){

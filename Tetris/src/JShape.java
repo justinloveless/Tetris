@@ -73,6 +73,12 @@ public class JShape extends Shape{
 			square[i].draw(g);
 		}
 	}
+	//draw method used for putting in storage
+	public void drawAside(Graphics g, int left, int top){
+		for (int i = 0; i < PIECE_COUNT; i++) {
+			square[i].draw(g, left, top);
+		}
+	}
 
 	/**
 	 * Moves the piece if possible Freeze the piece if it cannot move down

@@ -16,7 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.JTextArea;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
@@ -61,6 +63,9 @@ public class Tetris extends JPanel {
 		storedPiece = null;
 		game = new Game(this);
 		ec = new EventController(game);
+		//do not start timer yet
+		ec.getTimer().stop();
+		
 		JFrame f = new JFrame("Tetris Game");
 		f.add(this);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -156,7 +161,7 @@ public class Tetris extends JPanel {
 		instructionPanel.setLayout(null);
 		rightPanel.add(instructionPanel);
 		
-		/*create instruction text field*/
+		/*create instruction text area*/
 		txtInstruction = new JTextArea();
 		txtInstruction.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		txtInstruction.setBackground(Color.LIGHT_GRAY);
@@ -168,30 +173,62 @@ public class Tetris extends JPanel {
 		txtInstruction.setWrapStyleWord(true);
 		instructionPanel.add(txtInstruction);
 		
-		/*create left panel*/
-		JPanel leftPanel = new JPanel();
-		leftPanel.setBackground(Color.GRAY);
-		leftPanel.setBounds(10,50,80,405);
-		leftPanel.setLayout(null);
-		add(leftPanel);
+		/*create border for use in store and next piece text fields*/
+		Border border = BorderFactory.createLineBorder(Color.GRAY,0);
+		/*create stored piece text field*/
+		JTextField txtStored= new JTextField();
+		txtStored.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtStored.setHorizontalAlignment(SwingConstants.LEFT);
+		txtStored.setBackground(Color.DARK_GRAY);
+		txtStored.setForeground(Color.LIGHT_GRAY);
+		txtStored.setBorder(border);
+		txtStored.setText("Stored:");
+		txtStored.setBounds(20, 60, 60, 15);
+		txtStored.setEditable(false);
+		txtStored.setColumns(10);
+		add(txtStored);
 		
-		/*create stored piece label*/
-		JLabel lblStored = new JLabel("Stored:");
-		lblStored.setHorizontalAlignment(SwingConstants.CENTER);
-		lblStored.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblStored.setBounds(10,5,60,15);
-		leftPanel.add(lblStored);
+		/*create next piece text field*/
+		JTextField txtNext= new JTextField();
+		txtNext.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtNext.setHorizontalAlignment(SwingConstants.LEFT);
+		txtNext.setBackground(Color.DARK_GRAY);
+		txtNext.setForeground(Color.LIGHT_GRAY);
+		txtNext.setBorder(border);
+		txtNext.setText("Next:");
+		txtNext.setBounds(20, 220, 60, 15);
+		txtNext.setEditable(false);
+		txtNext.setColumns(10);
+		add(txtNext);
+		
+//		/*create left panel*/
+//		JPanel leftPanel = new JPanel();
+//		leftPanel.setBackground(Color.GRAY);
+//		leftPanel.setBounds(10,50,80,405);
+//		leftPanel.setLayout(null);
+//		add(leftPanel);
+//		
+//		/*create stored piece label*/
+//		JLabel lblStored = new JLabel("Stored:");
+//		lblStored.setHorizontalAlignment(SwingConstants.CENTER);
+//		lblStored.setFont(new Font("Tahoma", Font.BOLD, 13));
+//		lblStored.setBounds(10,5,60,15);
+//		leftPanel.add(lblStored);
+//
+//		/*create stored piece panel*/
+//		storedPanel = new JPanel();
+//		storedPanel.setBackground(Color.LIGHT_GRAY);
+//		storedPanel.setBounds(10, 20, 60, 120); 	
+//		storedPanel.setLayout(null);
+//		leftPanel.add(storedPanel);
+//		
+//		/*Add Shape to stored panel*/
+//		storedPanel.add();
 
-		/*create stored piece panel*/
-		storedPanel = new JPanel();
-		storedPanel.setBackground(Color.LIGHT_GRAY);
-		storedPanel.setBounds(10, 20, 60, 120); 	
-		storedPanel.setLayout(null);
-		leftPanel.add(storedPanel);
 		
 
-		
-		
+		//start timer 
+		ec.getTimer().start();
 	}
 	/**
 	 * Updates the display
@@ -256,64 +293,6 @@ public class Tetris extends JPanel {
 	public void setStoredPiece(Shape p){
 		storedPiece = p;
 	}
-//	private void readPrefs(){
-//		File save = new File("tetrisSave.txt");
-//		try {
-//			ObjectInputStream ois = new ObjectInputStream(
-//					new FileInputStream(save));
-//			
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	private void savePrefs(){
-//		ObjectOutputStream oos;
-//		try {
-//			File f = new File("tetrisSave.txt");
-//			if (!f.exists()){
-//				System.out.println("File didn't exist!");
-//				f.createNewFile();
-//				oos = new ObjectOutputStream(
-//						new FileOutputStream(f, false));
-////				prefs = new Preferences();
-//				oos.writeObject(prefs);
-//				oos.flush();
-//				oos.close();
-//				readPrefs();
-//				return;
-//			} else if (prefs != null){
-//				System.out.println("about to save");
-//				oos = new ObjectOutputStream(
-//						new FileOutputStream(f, false));
-////				prefs.savePrefs(oos);
-//				oos.writeObject(prefs);
-//				oos.flush();
-//				oos.close();
-//				System.out.println("HiScore->" + prefs.highScore);
-//				readPrefs();
-//				return;
-//			} else {
-//				System.out.println("prefs was null");
-//				oos = new ObjectOutputStream(
-//						new FileOutputStream(f, false));
-//				prefs = new Preferences();
-//				oos.writeObject(prefs);
-//				oos.flush();
-//				oos.close();
-//				readPrefs();
-//				return;
-//			}
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		System.out.println("Didn't save");
-//	}
 	
 	public Preferences getPrefs(){
 		return prefs;

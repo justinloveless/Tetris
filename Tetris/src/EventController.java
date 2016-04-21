@@ -101,6 +101,10 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private void stopClip(Clip c) {
 		c.stop();
 	}
+	//get timer
+	public Timer getTimer(){
+		return timer;
+	}
 	/**
 	 * Responds to special keys being pressed.
 	 * 

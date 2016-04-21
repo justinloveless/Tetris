@@ -97,7 +97,7 @@ public class Preferences implements Serializable{
 	public boolean savePrefs(){
 		File save = new File("tetrisSave.txt");
 		ObjectOutputStream oos;
-		System.out.println("Saving...");
+//		System.out.println("Saving...");
 		try {
 			oos = new ObjectOutputStream(
 					new FileOutputStream(save));
@@ -106,15 +106,15 @@ public class Preferences implements Serializable{
 			oos.writeObject(this);
 			oos.flush();
 			oos.close();
-			System.out.println("Checking that file was written correctly");
+//			System.out.println("Checking that file was written correctly");
 			try {
 				ObjectInputStream ois1 = new ObjectInputStream(
 						new FileInputStream(save));
 				Preferences temp = (Preferences) ois1.readObject();
 				this.clone(temp);
-				System.out.println("File successfully created:\n" 
-						+ "highScore = " + this.highScore 
-						+ "\n" + this.toString());
+//				System.out.println("File successfully created:\n" 
+//						+ "highScore = " + this.highScore 
+//						+ "\n" + this.toString());
 			} catch (IOException | ClassNotFoundException e1) {
 				System.out.println("File was not corretly written");
 				System.exit(-1);
@@ -178,12 +178,12 @@ public class Preferences implements Serializable{
 			temp = (Preferences) ois.readObject();
 //			System.out.println(temp.toString());
 			this.clone(temp);
-			System.out.println("highScore = " + this.highScore 
-					+ "\n" + this.toString());
+//			System.out.println("highScore = " + this.highScore 
+//					+ "\n" + this.toString());
 			ois.close();
 		} catch (FileNotFoundException e) {
 			//if file does not exist, create one
-			System.out.println("File did not exist. Creating one now...");
+//			System.out.println("File did not exist. Creating one now...");
 			try {
 				save.createNewFile();
 				//write default info to file
@@ -197,15 +197,15 @@ public class Preferences implements Serializable{
 				System.out.println("Unable to create file");
 				return;
 			}
-			System.out.println("Checking that file was written correctly");
+//			System.out.println("Checking that file was written correctly");
 				try {
 					ObjectInputStream ois1 = new ObjectInputStream(
 							new FileInputStream(save));
 					Preferences temp = (Preferences) ois1.readObject();
 					this.clone(temp);
-					System.out.println("File successfully created:\n" 
-							+ "highScore = " + this.highScore 
-							+ "\n" + this.toString());
+//					System.out.println("File successfully created:\n" 
+//							+ "highScore = " + this.highScore 
+//							+ "\n" + this.toString());
 				} catch (IOException | ClassNotFoundException e1) {
 					System.out.println("File was not corretly written");
 					System.exit(-1);
@@ -214,15 +214,15 @@ public class Preferences implements Serializable{
 			
 		} catch (IOException e) {
 //			e.printStackTrace();
-			System.out.println("outer IOException reached, writing new file");
+//			System.out.println("outer IOException reached, writing new file");
 			//this should catch EOFExceptions too, so try writing an object
 			try {
 				ObjectInputStream ois = new ObjectInputStream(
 						new FileInputStream(save));
 				Preferences temp = (Preferences) ois.readObject();
 				this.clone(temp);
-				System.out.println("hiScore = " + temp.highScore + "\n" 
-						+ temp.toString());
+//				System.out.println("hiScore = " + temp.highScore + "\n" 
+//						+ temp.toString());
 				ois.close();
 //				ObjectOutputStream oos = new ObjectOutputStream(
 //						new FileOutputStream(save));

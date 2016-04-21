@@ -43,9 +43,9 @@ public abstract class Shape {
 	}
 	
 	/*draw the piece on the given Graphics context, with custom left and top values*/
-	public void mdraw(Graphics g) {
+	public void drawAside(Graphics g, int left, int top) {
 		for (int i = 0; i < PIECE_COUNT; i++) {
-			square[i].draw(g);
+			square[i].draw(g, left, top);
 		}
 	}
 	

@@ -193,9 +193,7 @@ public class Grid {
 	}
 	
 	/*draws the grid on the given graphics context, with custom height and width*/
-	public void draw(Graphics g, int height, int width) {
-		int left = 100;
-		int top = 50;
+	public void draw(Graphics g, int left, int top, int height, int width) {
 		int border = 5;
 		// draw the edges as rectangles: left, right in blue then bottom in red
 		g.setColor(Color.BLACK);
