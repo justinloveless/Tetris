@@ -19,6 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,7 +54,8 @@ public class Tetris extends JPanel {
 	 */
 	public Tetris() throws Exception{
 		prefs = new Preferences();
-		readPrefs();
+		prefs.init();
+//		readPrefs();
 		storageGrid = new Grid(4,3);
 		storedPiece = null;
 		game = new Game(this);
@@ -191,18 +193,18 @@ public class Tetris extends JPanel {
 			ec.resetTimerEc();
 			System.out.println("Score=" + score + " hiScore=" + highScore);
 			if (score > highScore){
-				prefs.setHS(score);
-				savePrefs();
+				prefs.highScore = score;
 			}
+			prefs.savePrefs();
 		}
 		else if(game.getGameIsPaused()){
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
 			g.drawString("PAUSED", 140, 200);
 			System.out.println("HighScore = " + highScore + " score = " + score);
-			if (score > highScore){
-				prefs.setHS(score);
-				System.out.println("HS(before save) = " + prefs.getHS());
+			if (score > prefs.highScore){
+				prefs.highScore = score;
+				System.out.println("HS(before save) = " + prefs.highScore);
 				savePrefs();
 			}
 		}
@@ -235,24 +237,15 @@ public class Tetris extends JPanel {
 		storedPiece = p;
 	}
 	private void readPrefs(){
+		File save = new File("tetrisSave.txt");
 		try {
-			File f = new File("tetrisSave.txt");
-			if (!f.exists()){
-				f.createNewFile();
-				prefs = new Preferences();
-			} else if (f.length() > 10){
-				ObjectInputStream ois = new ObjectInputStream(
-						new FileInputStream(f));
-				prefs = new Preferences(ois);
-				highScore = prefs.getHS();
-				ois.close();
-			}
+			ObjectInputStream ois = new ObjectInputStream(
+					new FileInputStream(save));
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			prefs = new Preferences();
 		} catch (IOException e) {
 			e.printStackTrace();
-			prefs = new Preferences();
 		}
 	}
 	private void savePrefs(){
@@ -262,11 +255,31 @@ public class Tetris extends JPanel {
 			if (!f.exists()){
 				System.out.println("File didn't exist!");
 				f.createNewFile();
+				oos = new ObjectOutputStream(
+						new FileOutputStream(f, false));
+//				prefs = new Preferences();
+				oos.writeObject(prefs);
+				oos.flush();
+				oos.close();
+				readPrefs();
+				return;
 			} else if (prefs != null){
 				System.out.println("about to save");
 				oos = new ObjectOutputStream(
 						new FileOutputStream(f, false));
-				prefs.savePrefs(oos);
+//				prefs.savePrefs(oos);
+				oos.writeObject(prefs);
+				oos.flush();
+				oos.close();
+				System.out.println("HiScore->" + prefs.highScore);
+				readPrefs();
+				return;
+			} else {
+				System.out.println("prefs was null");
+				oos = new ObjectOutputStream(
+						new FileOutputStream(f, false));
+				prefs = new Preferences();
+				oos.writeObject(prefs);
 				oos.flush();
 				oos.close();
 				readPrefs();
@@ -281,14 +294,19 @@ public class Tetris extends JPanel {
 		}
 		System.out.println("Didn't save");
 	}
+	
+	public Preferences getPrefs(){
+		return prefs;
+	}
+	
 	public void draw(){
 		if (txtLevel != null && txtScore != null){
 			txtLevel.setText(level + "");
 			txtScore.setText(score + "");
-			if (score > highScore){
-				highScore = score;
-				txtHiScore.setText(highScore + "");
+			if (score > prefs.highScore){
+				prefs.highScore = score;
 			}
+			txtHiScore.setText(prefs.highScore + "");
 		}
 	}
 	public void updateStorage(){

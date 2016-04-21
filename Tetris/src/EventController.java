@@ -47,6 +47,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private boolean music;
 	
 	private Clip clip;
+	private Clip gameOverClip;
 	/**
 	 * Creates an EventController to handle key and timer events.
 	 * 
@@ -67,7 +68,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 		
 		
 		try{//Play tetris theme in background
-	    	File open = new File("Tetris.wav");;
+	    	File open = new File("Tetris.wav");
 	        AudioInputStream ais = 
 	        		AudioSystem.getAudioInputStream(open);
 	        final Clip clip = AudioSystem.getClip();
@@ -77,18 +78,28 @@ public class EventController extends KeyAdapter implements ActionListener {
 		catch(IOException e){
 			e.printStackTrace();
 		}
-		startClip();
+		startClip(clip, Clip.LOOP_CONTINUOUSLY);
+		
+		try { //set up game-over clip, but do not start it yet
+			File open = new File("sad-trombone.wav");
+			AudioInputStream ais = AudioSystem.getAudioInputStream(open);
+			final Clip clip = AudioSystem.getClip();
+			clip.open(ais);
+			this.gameOverClip = clip;
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 		
 	}
 	
 	//Start Tetris theme
-	private void startClip() {
-		clip.start();
-		clip.loop(-1);
+	private void startClip(Clip c, int loopLength) {
+		c.start();
+		c.loop(loopLength);
 	}
 	//Stop Tetris theme
-	private void stopClip() {
-		clip.stop();
+	private void stopClip(Clip c) {
+		c.stop();
 	}
 	/**
 	 * Responds to special keys being pressed.
@@ -99,6 +110,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 		// if 'Q', quit the game
 		if (e.getKeyCode() == KeyEvent.VK_Q) {
 			timer.stop();
+			game.save();
 			((JFrame) e.getSource()).dispose();
 			System.exit(0);
 		}
@@ -108,15 +120,18 @@ public class EventController extends KeyAdapter implements ActionListener {
 			timer.start();
 			gameOver = false;
 			game.isNotOver();
+			if (this.music){
+				startClip(clip, Clip.LOOP_CONTINUOUSLY);
+			}
 		}
 			
 		if(e.getKeyCode() == KeyEvent.VK_M){
 			if(this.music == true){
-				stopClip();
+				stopClip(clip);
 				this.music = false;
 			}
 			else{
-				startClip();
+				startClip(clip, Clip.LOOP_CONTINUOUSLY);
 				this.music = true;
 			}
 		}
@@ -144,7 +159,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 				break;
 			case KeyEvent.VK_P:
 				if (this.music){
-					stopClip();
+					stopClip(clip);
 					this.music = false;
 				}
 				game.gamePaused(true);
@@ -157,7 +172,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_P:
 					if (!this.music){
-						startClip();
+						startClip(clip, Clip.LOOP_CONTINUOUSLY);
 						this.music = true;
 					}
 					timer.start();
@@ -180,8 +195,12 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private void handleMove(Direction direction) {
 		game.movePiece(direction);
 		gameOver = game.isGameOver();
-		if (gameOver)
+		if (gameOver){
 			timer.stop();
+			stopClip(clip);
+			gameOverClip.start();
+			
+		}
 	}
 	
 	public void resetTimerEc(){
@@ -210,12 +229,12 @@ public class EventController extends KeyAdapter implements ActionListener {
 //			System.out.println("You Win, Congrats");
 //		}
 		PIECE_MOVE_TIME /= 1.2;
-		if (PIECE_MOVE_TIME < MIN_MOVE_TIME){
-			PIECE_MOVE_TIME = MIN_MOVE_TIME;
-		}
-		if (game.getLevel() >= MAX_LEVEL){
-			System.out.println("You Win, Congrats!");
-		}
+//		if (PIECE_MOVE_TIME < MIN_MOVE_TIME){
+//			PIECE_MOVE_TIME = MIN_MOVE_TIME;
+//		}
+//		if (game.getLevel() >= MAX_LEVEL){
+//			System.out.println("You Win, Congrats!");
+//		}
 		
 		System.out.println("PIECE_MOVE_TIME == " + PIECE_MOVE_TIME);
 		double delay = 1000 * PIECE_MOVE_TIME; // in milliseconds

@@ -64,6 +64,10 @@ public class Game {
 		isOver = false;
 	}
 	
+	public boolean save(){
+		return this.display.getPrefs().savePrefs();
+	}
+	
 	public void gamePaused(boolean state){
 		if(state){
 			gameIsPaused = true;
