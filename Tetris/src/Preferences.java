@@ -93,6 +93,19 @@ public class Preferences implements Serializable{
 		}
 	}
 	
+	public void updateText(){
+		txtQuit = KeyEvent.getKeyText(quit) + " - Quit Game";
+		txtPause = KeyEvent.getKeyText(pause) + " - Pause";
+		txtMute = KeyEvent.getKeyText(mute) + " - Mute";	
+		txtNewGame = KeyEvent.getKeyText(newGame) + " - New Game";	
+		txtRotate = KeyEvent.getKeyText(rotate) + " - Rotate";	
+		txtSavePiece = KeyEvent.getKeyText(savePiece) + " - Swap";
+		txtMoveLeft = KeyEvent.getKeyText(moveLeft) + " - Move left";
+		txtMoveRight= KeyEvent.getKeyText(moveRight) + " - Move right";
+		txtDropSoft = KeyEvent.getKeyText(dropSoft) + " - Soft Drop";
+		txtDropHard = KeyEvent.getKeyText(dropHard) + "  - Hard Drop";
+	}
+	
 	//save to file
 	public boolean savePrefs(){
 		File save = new File("tetrisSave.txt");
@@ -115,18 +128,17 @@ public class Preferences implements Serializable{
 //				System.out.println("File successfully created:\n" 
 //						+ "highScore = " + this.highScore 
 //						+ "\n" + this.toString());
+				ois1.close();
 			} catch (IOException | ClassNotFoundException e1) {
 				System.out.println("File was not corretly written");
 				System.exit(-1);
 			}
 			return true;
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			System.out.println("File not found");
 			return false;
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			System.out.println("IOException found when saving");
 			return false;
@@ -206,6 +218,7 @@ public class Preferences implements Serializable{
 //					System.out.println("File successfully created:\n" 
 //							+ "highScore = " + this.highScore 
 //							+ "\n" + this.toString());
+					ois1.close();
 				} catch (IOException | ClassNotFoundException e1) {
 					System.out.println("File was not corretly written");
 					System.exit(-1);
@@ -230,15 +243,12 @@ public class Preferences implements Serializable{
 //				oos.flush();
 //				oos.close();
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				//this should never be called, because it's handled by an outer catch
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				//I don't know what to do in this situation
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				//I don't know what to do in this situation
 			}

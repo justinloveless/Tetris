@@ -9,18 +9,25 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Robot;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.JTextArea;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,16 +48,19 @@ public class Tetris extends JPanel {
 	private Grid storageGrid;
 	private Shape storedPiece;
 	private EventController ec;
-	private JTextField txtTetris;
 	private int score=0, level=0, highScore;
+	private JTextField txtTetris;
 	private JTextField txtScore;
 	private JTextField txtHiScore;
 	private JTextField txtLevel;
 	private JTextArea txtInstruction;
 	private JPanel storedPanel;
+	private JButton muteBtn;
+	private JButton settingsBtn;
 	private ObjectOutputStream saveOutputFile;
 	private ObjectInputStream saveInputFile;
 	private Preferences prefs;
+	private PreferencesMenu prefsMenu;
 	/**
 	 * Sets up the parts for the Tetris game, display and user control
 	 * @throws Exception 
@@ -58,6 +68,7 @@ public class Tetris extends JPanel {
 	public Tetris() throws Exception{
 		prefs = new Preferences();
 		prefs.init();
+		prefsMenu = new PreferencesMenu(this, prefs);
 //		readPrefs();
 		storageGrid = new Grid(4,3);
 		storedPiece = null;
@@ -69,9 +80,10 @@ public class Tetris extends JPanel {
 		JFrame f = new JFrame("Tetris Game");
 		f.add(this);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(550, 550);
+		f.setSize(500, 550);
 		f.setVisible(true);
 		f.addKeyListener(ec);
+//		f.setVisible(false);
 		setBackground(Color.DARK_GRAY);
 		setLayout(null);
 		
@@ -125,16 +137,31 @@ public class Tetris extends JPanel {
 		scorePanel.add(txtHiScore);
 		txtHiScore.setColumns(10);
 		
-		/*set up Title text field*/
-		txtTetris = new JTextField();
-		txtTetris.setBackground(Color.GRAY);
-		txtTetris.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTetris.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
-		txtTetris.setText(" TETRIS");
-		txtTetris.setBounds(10, 11, 112, 37);
-		txtTetris.setEditable(false);
-		rightPanel.add(txtTetris);
-		txtTetris.setColumns(10);
+		/*set up Title text pane using rainbow colors*/
+		StyledDocument doc = new DefaultStyledDocument();
+		JTextPane TETRIS = new JTextPane(doc);
+		TETRIS.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 23));
+		TETRIS.setAlignmentY(CENTER_ALIGNMENT);
+		TETRIS.setAlignmentX(CENTER_ALIGNMENT);
+		TETRIS.setText("TETRIS");
+		TETRIS.setBounds(10, 11, 112, 37);
+		TETRIS.setEditable(false);
+		TETRIS.setBackground(Color.GRAY);
+		SimpleAttributeSet set = new SimpleAttributeSet();
+		StyleConstants.setForeground(set, Color.RED);
+		doc.setCharacterAttributes(0, 1, set, true);
+		StyleConstants.setForeground(set, Color.ORANGE);
+		doc.setCharacterAttributes(1, 1, set, true);
+		StyleConstants.setForeground(set, Color.YELLOW);
+		doc.setCharacterAttributes(2, 1, set, true);
+		StyleConstants.setForeground(set, Color.GREEN);
+		doc.setCharacterAttributes(3, 1, set, true);
+		StyleConstants.setForeground(set, Color.BLUE);
+		doc.setCharacterAttributes(4, 1, set, true);
+		StyleConstants.setForeground(set, Color.CYAN);
+		doc.setCharacterAttributes(5, 1, set, true);
+		rightPanel.add(TETRIS);
+		
 		
 		/*create level label*/
 		JLabel lblLevel = new JLabel("LEVEL:");
@@ -201,34 +228,52 @@ public class Tetris extends JPanel {
 		txtNext.setColumns(10);
 		add(txtNext);
 		
-//		/*create left panel*/
-//		JPanel leftPanel = new JPanel();
-//		leftPanel.setBackground(Color.GRAY);
-//		leftPanel.setBounds(10,50,80,405);
-//		leftPanel.setLayout(null);
-//		add(leftPanel);
-//		
-//		/*create stored piece label*/
-//		JLabel lblStored = new JLabel("Stored:");
-//		lblStored.setHorizontalAlignment(SwingConstants.CENTER);
-//		lblStored.setFont(new Font("Tahoma", Font.BOLD, 13));
-//		lblStored.setBounds(10,5,60,15);
-//		leftPanel.add(lblStored);
-//
-//		/*create stored piece panel*/
-//		storedPanel = new JPanel();
-//		storedPanel.setBackground(Color.LIGHT_GRAY);
-//		storedPanel.setBounds(10, 20, 60, 120); 	
-//		storedPanel.setLayout(null);
-//		leftPanel.add(storedPanel);
-//		
-//		/*Add Shape to stored panel*/
-//		storedPanel.add();
-
+		/*create mute button*/
+		muteBtn = new JButton("Mute");
+		muteBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		muteBtn.setBackground(Color.LIGHT_GRAY);
+		muteBtn.setForeground(Color.BLACK);
+		muteBtn.setBounds(10, 340, 80, 20);
+		muteBtn.setEnabled(true);
+		muteBtn.setText("Mute");
+		muteBtn.addActionListener(new ActionListener(){
+			Robot robot = new Robot();
+			public void actionPerformed(ActionEvent e){
+				if (ec.isMusicPlaying()){
+					robot.keyPress(prefs.mute);
+				} else {
+					robot.keyPress(prefs.mute);
+				}
+				
+			}
+		});
+		muteBtn.setFocusable(false);
+		add(muteBtn);
+		
+		/*create settings button*/
+		settingsBtn = new JButton("Settings");
+		settingsBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		settingsBtn.setBackground(Color.LIGHT_GRAY);
+		settingsBtn.setForeground(Color.BLACK);
+		settingsBtn.setBounds(10, 380, 80, 20);
+		settingsBtn.setEnabled(true);
+		settingsBtn.addActionListener(new ActionListener(){
+			Robot robot = new Robot();
+			public void actionPerformed(ActionEvent e){
+				if (ec.getStateOfTime()){
+					robot.keyPress(prefs.pause);
+				} 
+				prefsMenu.openPrefsMenu();
+			}
+		});
+		settingsBtn.setFocusable(false);
+		add(settingsBtn);
 		
 
+//		f.setVisible(true);
 		//start timer 
 		ec.getTimer().start();
+		f.requestFocusInWindow();
 	}
 	/**
 	 * Updates the display
@@ -249,16 +294,16 @@ public class Tetris extends JPanel {
 			g.drawString("GAME OVER", 107, 200);
 			ec.resetTimerEc();
 			System.out.println("Score=" + score + " hiScore=" + highScore);
-			if (score > highScore){
+			if (score > prefs.highScore){
 				prefs.highScore = score;
+				prefs.savePrefs();
 			}
-			prefs.savePrefs();
 		}
-		else if(game.getGameIsPaused()){
+		else if(game.isPaused()){
 			g.setFont(new Font("HonMincho", Font.BOLD, 30));
 			g.setColor(Color.BLACK);
 			g.drawString("PAUSED", 140, 200);
-			System.out.println("HighScore = " + highScore + " score = " + score);
+			System.out.println("HighScore = " + prefs.highScore + " score = " + score);
 			if (score > prefs.highScore){
 				prefs.highScore = score;
 				System.out.println("HS(before save) = " + prefs.highScore);
@@ -298,6 +343,14 @@ public class Tetris extends JPanel {
 		return prefs;
 	}
 	
+	public PreferencesMenu getPrefsMenu(){
+		return prefsMenu;
+	}
+	
+	public JButton getMuteBtn(){
+		return muteBtn;
+	}
+	
 	public void draw(){
 		if (txtLevel != null && txtScore != null){
 			txtLevel.setText(level + "");
@@ -306,6 +359,9 @@ public class Tetris extends JPanel {
 				prefs.highScore = score;
 			}
 			txtHiScore.setText(prefs.highScore + "");
+			if (!txtInstruction.equals(prefs.toString())){
+				txtInstruction.setText(prefs.toString());
+			}
 		}
 	}
 	public void updateStorage(){

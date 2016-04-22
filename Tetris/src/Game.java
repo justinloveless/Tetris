@@ -87,7 +87,7 @@ public class Game {
 		}
 	}
 	
-	public boolean getGameIsPaused(){
+	public boolean isPaused(){
 		return gameIsPaused;
 	}
 	
@@ -300,7 +300,11 @@ public class Game {
         	newPieceState = true;
         	Random rand = new Random();
         	//swap nextPiece into current piece
-        	piece = getPiece(nextPiece.getPieceNum(), 1, Grid.WIDTH/2 - 1, grid);
+        	if (nextPiece == null){
+            	piece = getPiece(rand.nextInt(7), 1, Grid.WIDTH/2 - 1, grid);
+        	} else {
+            	piece = getPiece(nextPiece.getPieceNum(), 1, Grid.WIDTH/2 - 1, grid);
+        	}
         	//get a new nextPiece
         	nextPiece = getPiece(rand.nextInt(7), 1, 1, nextPieceGrid);
         }

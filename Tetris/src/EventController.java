@@ -45,6 +45,9 @@ public class EventController extends KeyAdapter implements ActionListener {
 	private boolean gameOver;
 	
 	private boolean music;
+	public boolean isMusicPlaying(){
+		return music;
+	}
 	
 	private Clip clip;
 	private Clip gameOverClip;
@@ -108,7 +111,6 @@ public class EventController extends KeyAdapter implements ActionListener {
 	/**
 	 * Responds to special keys being pressed.
 	 * 
-	 * Currently just responds to the space key and the q(uit) key
 	 */
 	public void keyPressed(KeyEvent e) {
 		// if 'Q', quit the game
@@ -132,14 +134,17 @@ public class EventController extends KeyAdapter implements ActionListener {
 		}
 			
 //		if(e.getKeyCode() == KeyEvent.VK_M){
-		if(e.getKeyCode() == game.getDisp().getPrefs().mute){
+		if(e.getKeyCode() == game.getDisp().getPrefs().mute && !game.isPaused()
+				&& !game.isGameOver()){
 			if(this.music == true){
 				stopClip(clip);
 				this.music = false;
+				game.getDisp().getMuteBtn().setText("Unmute");
 			}
 			else{
 				startClip(clip, Clip.LOOP_CONTINUOUSLY);
 				this.music = true;
+				game.getDisp().getMuteBtn().setText("Mute");
 			}
 		}
 		
@@ -203,6 +208,7 @@ public class EventController extends KeyAdapter implements ActionListener {
 				case KeyEvent.VK_P:
 					if (!this.music){
 						startClip(clip, Clip.LOOP_CONTINUOUSLY);
+						game.getDisp().getMuteBtn().setText("Mute");
 						this.music = true;
 					}
 					timer.start();
